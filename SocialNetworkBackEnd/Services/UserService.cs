@@ -77,6 +77,12 @@ namespace SocialNetworkBackEnd.Services
             }
             return _userRepository.EditUser(ConvertingUserModels.EditConvertUserBlankToUserDb(user, id));
         }
-        
+        public string FindUser(UserLogin user)
+        {
+            UserDB? userDB = _userRepository.FindUser(user.Email);
+            if (userDB == null) return Constants.EMAIL_NOT_FOUND;
+            if (userDB.Password != user.Password) return Constants.PASSWORD_NOT_CORRECT;
+            return Constants.GOOD;
+        }
     }
 }

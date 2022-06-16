@@ -11,5 +11,6 @@ namespace SocialNetworkBackEnd.Interafaces
 		bool AddUser(UserDB user);
 		bool DeleteUser(Guid id);
 		bool EditUser(UserDB user);
+		UserDB FindUser(string email);
 	}
 }
