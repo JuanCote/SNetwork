@@ -67,9 +67,9 @@ namespace SocialNetworkBackEnd.Repository
             {
                 using NpgsqlConnection conn = ConnectionKeys.ConfigureDbConnection();
                 conn.Open();
-                using NpgsqlCommand command = new NpgsqlCommand($"insert into users" +
-                    $"(id, name, surname, age, avatar, description, status, creation_date)" +
-                    $"values(@id, @name, @surname, @age, @avatar, @description, @status, @creation_date)", conn)
+                using NpgsqlCommand command = new NpgsqlCommand($"insert into users " +
+                    $"(id, name, surname, age, avatar, description, status, creation_date, email, password) " +
+                    $"values(@id, @name, @surname, @age, @avatar, @description, @status, @creation_date, @email, @password)", conn)
                 {
                     Parameters =
                     {
@@ -81,6 +81,8 @@ namespace SocialNetworkBackEnd.Repository
                         new NpgsqlParameter("@description", user.Description == null ? DBNull.Value : user.Description),
                         new NpgsqlParameter("@status", user.Status == null ? DBNull.Value : user.Status),
                         new NpgsqlParameter("@creation_date", user.CreationDate),
+                        new NpgsqlParameter("@email", user.Email),
+                        new NpgsqlParameter("@password", user.Password),
                     }
                 };
                 return command.ExecuteNonQuery() > 0 ? true : false;

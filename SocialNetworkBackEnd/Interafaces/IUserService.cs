@@ -9,9 +9,9 @@ namespace SocialNetworkBackEnd.Interafaces
     {
         IEnumerable<UserMiniView> GetUsers();
         UserView GetUserById(Guid id);
-        bool AddUser(UserBlank user);
+        string AddUser(UserBlank user);
         bool DeleteUser(Guid id);
         bool EditUser(UserBlankEdit user, Guid id);
-        string FindUser(UserLogin user);
+        LoginResult FindUser(UserLogin user);
     }
 }

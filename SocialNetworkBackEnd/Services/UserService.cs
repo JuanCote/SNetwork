@@ -28,7 +28,7 @@ namespace SocialNetworkBackEnd.Services
                 ConvertingUserModels.FromUserDBToUserDomain(_userRepository.GetUserById(id))
                 );
         }
-        public bool AddUser(UserBlank user)
+        public string AddUser(UserBlank user)
         {
             Guid id = Guid.NewGuid();
             if (user.Avatar != "")
@@ -37,19 +37,19 @@ namespace SocialNetworkBackEnd.Services
                 MatchCollection matches = regexAvatar.Matches(user.Avatar);
                 if (matches.Count != 1)
                 {
-                    return false;
+                    return "Не валлидная ссылка на фото";
                 }
             }
             if (user.Name.Length < 2 || user.Surname.Length < 3)
             {
-                return false;
+                return "Имя или фамилия слишком короткие";
             }
             Regex nameAndSurnameRegex = new Regex(@"\d");
             MatchCollection matchesName = nameAndSurnameRegex.Matches(user.Name);
             MatchCollection matchesSurname = nameAndSurnameRegex.Matches(user.Surname);
             if (matchesName.Count > 0 || matchesSurname.Count > 0)
             {
-                return false;
+                return "В имене или фамилии содержатся недопустимые символы";
             }
             if (user.Age == 0)
             {
@@ -57,9 +57,12 @@ namespace SocialNetworkBackEnd.Services
             }
             else if (user.Age > 101 || user.Age < 4)
             {
-                return false;
+                return "Не корректный возраст";
             }
-            return _userRepository.AddUser(ConvertingUserModels.InsertConvertUserBlankToUserDb(user, id));
+            if (!user.Email.Contains("@")) return "Адрес почты неверный";
+            if (user.Password.Length < 5) return "Пароль слишком короткий";
+            bool result = _userRepository.AddUser(ConvertingUserModels.InsertConvertUserBlankToUserDb(user, id));
+            return result ? Constants.GOOD : "Такой адрес электронной почты существует";
         }
         public bool DeleteUser(Guid id)
         {
@@ -77,12 +80,25 @@ namespace SocialNetworkBackEnd.Services
             }
             return _userRepository.EditUser(ConvertingUserModels.EditConvertUserBlankToUserDb(user, id));
         }
-        public string FindUser(UserLogin user)
+        public LoginResult FindUser(UserLogin user)
         {
             UserDB? userDB = _userRepository.FindUser(user.Email);
-            if (userDB == null) return Constants.EMAIL_NOT_FOUND;
-            if (userDB.Password != user.Password) return Constants.PASSWORD_NOT_CORRECT;
-            return Constants.GOOD;
+            LoginResult result = new LoginResult();
+            if (userDB == null)
+            {
+                result.status = Constants.EMAIL_NOT_FOUND;
+                result.user = null;
+                return result;
+            }
+            if (userDB.Password != user.Password)
+            {
+                result.status = Constants.PASSWORD_NOT_CORRECT;
+                result.user = null;
+                return result;
+            }
+            result.status = Constants.GOOD;
+            result.user = ConvertingUserModels.FromUserDomainToUserView(ConvertingUserModels.FromUserDBToUserDomain(userDB));
+            return result;
         }
     }
 }

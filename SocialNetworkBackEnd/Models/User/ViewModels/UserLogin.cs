@@ -8,7 +8,6 @@ namespace SocialNetworkBackEnd.Models.User.ViewModels
         public string Email { get; set; }
         [Required(ErrorMessage = "Электронная почта должна быть заполненна")]
         public string Password { get; set; }
-        public bool RememberMe { get; set; } = false;
         public UserLogin() { }
     }
 }

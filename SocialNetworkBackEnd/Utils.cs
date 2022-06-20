@@ -1,4 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using SocialNetworkBackEnd.Models.ViewModels;
 using System;
 using System.Text;
 
@@ -29,8 +30,16 @@ namespace SocialNetworkBackEnd
 
     public class Constants 
     {
-        public const string EMAIL_NOT_FOUND = "email not found";
-        public const string PASSWORD_NOT_CORRECT = "password not correct";
-        public const string GOOD = "GOOD";
+        public const string EMAIL_NOT_FOUND = "Такого пользователя не существует";
+        public const string PASSWORD_NOT_CORRECT = "Не корректный пароль";
+
+        public const string GOOD = "GOOD 123487965";
     }
+
+    public class LoginResult {
+        public string status;
+        public UserView user;
+        public LoginResult (){ }
+    }
+
 }

@@ -6,32 +6,19 @@ namespace SocialNetworkBackEnd.Models.ViewModels
     {
         [Required(ErrorMessage = "Name is required!")]
         public string Name { get; set; }
+
         [Required(ErrorMessage = "Surname is required!")]
         public string Surname { get; set; }
         public int? Age { get; set; }
         public string? Avatar { get; set; }
         public string? Description { get; set; }
         public string? Status { get; set; }
+
+        [Required(ErrorMessage = "Email is required!")]
         public string Email { get; set; }
+
+        [Required(ErrorMessage = "Password is required!")]
         public string Password { get; set; }
-        //public UserBlank(string name,
-        //                 string surname,
-        //                 int? age,
-        //                 string? avatar,
-        //                 string? description,
-        //                 string? status,
-        //                 string email,
-        //                 string password)
-        //{
-        //    Name = name;
-        //    Surname = surname;
-        //    Age = age;
-        //    Avatar = avatar;
-        //    Description = description;
-        //    Status = status;
-        //    Email = email;
-        //    Password = password;
-        //}
-        public UserBlank() { } //TODO: спросить почему выбрасывает 500 ошибку без пустого конструктора
+        public UserBlank() { } 
     }
 }

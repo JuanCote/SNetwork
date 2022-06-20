@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using SocialNetworkBackEnd.Interafaces;
+using SocialNetworkBackEnd.Models.User;
 using SocialNetworkBackEnd.Models.User.ViewModels;
+using SocialNetworkBackEnd.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -25,20 +27,38 @@ namespace SocialNetworkBackEnd.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult Login([FromBody] UserLogin user)
         {
-            string result = _userService.FindUser(user);
-            if (result != Constants.GOOD) return BadRequest(new { error = result, result_code = 1 });
+            LoginResult result = _userService.FindUser(user);
+
+            if (result.status != Constants.GOOD) return BadRequest(result.status);
+
             var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Email) };
+
             var jwt = new JwtSecurityToken(
                 issuer: AuthOptions.ISSUER,
                 audience: AuthOptions.AUDIENCE,
                 claims: claims,
-                expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
+                expires: DateTime.UtcNow.Add(TimeSpan.FromDays(1)),
                 signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256)
                 );
+
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+
             return Ok(
-                new { access_token = encodedJwt, result_code = 0, email = user.Email }
+                new { access_token = encodedJwt, user = result.user }
                 );
         }
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public ActionResult AuthMe()
+        {
+            return User.Identity.IsAuthenticated ? Ok() : Unauthorized();
+        }
+
+    }
+    public class Result
+    {
+        string result;
+        UserView user;
     }
 }
