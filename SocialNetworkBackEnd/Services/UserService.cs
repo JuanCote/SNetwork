@@ -100,5 +100,6 @@ namespace SocialNetworkBackEnd.Services
             result.user = ConvertingUserModels.FromUserDomainToUserView(ConvertingUserModels.FromUserDBToUserDomain(userDB));
             return result;
         }
+        
     }
 }

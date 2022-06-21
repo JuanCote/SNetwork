@@ -31,7 +31,7 @@ namespace SocialNetworkBackEnd.Controllers
 
             if (result.status != Constants.GOOD) return BadRequest(result.status);
 
-            var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Email) };
+            var claims = new List<Claim> { new Claim(ClaimTypes.Name, result.user.Id.ToString()) };
 
             var jwt = new JwtSecurityToken(
                 issuer: AuthOptions.ISSUER,
@@ -52,13 +52,13 @@ namespace SocialNetworkBackEnd.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public ActionResult AuthMe()
         {
-            return User.Identity.IsAuthenticated ? Ok() : Unauthorized();
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Unauthorized();
+            }
+            UserView user = _userService.GetUserById(Guid.Parse(User.Identity.Name));
+            return Ok(user);
         }
 
-    }
-    public class Result
-    {
-        string result;
-        UserView user;
     }
 }
