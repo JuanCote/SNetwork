@@ -82,8 +82,14 @@ namespace SocialNetworkBackEnd.Services
         }
         public LoginResult FindUser(UserLogin user)
         {
-            UserDB? userDB = _userRepository.FindUser(user.Email);
             LoginResult result = new LoginResult();
+            if (user.Email == "" || user.Password == "")
+            {
+                result.user = null;
+                result.status = "Одно из полей пустое";
+                return result;
+            }
+            UserDB? userDB = _userRepository.FindUser(user.Email);
             if (userDB == null)
             {
                 result.status = Constants.EMAIL_NOT_FOUND;

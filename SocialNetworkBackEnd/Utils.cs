@@ -30,8 +30,8 @@ namespace SocialNetworkBackEnd
 
     public class Constants 
     {
-        public const string EMAIL_NOT_FOUND = "Такого пользователя не существует";
-        public const string PASSWORD_NOT_CORRECT = "Не корректный пароль";
+        public const string EMAIL_NOT_FOUND = "Мы не нашли пользователя с таким эмейлом";
+        public const string PASSWORD_NOT_CORRECT = "Не правильный пароль";
 
         public const string GOOD = "GOOD 123487965";
     }
