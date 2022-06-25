@@ -11,6 +11,7 @@ interface stateInterface {
   usersList: UserMiniView[]
   deleteHappen: boolean
   currentUser: UserView
+  isAdmin: boolean
 }
 
 const initialState: stateInterface = {
@@ -18,6 +19,7 @@ const initialState: stateInterface = {
   loadingFullScreen: false,
   deleteHappen: false,
   currentUser: <UserView>{},
+  isAdmin: false,
 }
 
 export const fetchUsers = createAsyncThunk(
@@ -93,6 +95,7 @@ export const editUser = createAsyncThunk(
 interface userLoginData {
   access_token: string
   user: UserView
+  isAdmin: boolean
 }
 
 export const userLogin = createAsyncThunk(
@@ -103,14 +106,23 @@ export const userLogin = createAsyncThunk(
       return result.data
     } catch (err) {
       const error = err as AxiosError
+      console.log(error)
+      if (error.response?.status === 0) {
+        throw rejectWithValue(error.message)
+      }
       throw rejectWithValue(error.response?.data)
     }
   }
 )
 
-export const isUser = createAsyncThunk("users/isUser", async (_, { rejectWithValue }) => {
+interface authData {
+  user: UserView
+  isAdmin: boolean
+}
+
+export const isAuth = createAsyncThunk("users/isUser", async (_, { rejectWithValue }) => {
   try {
-    const result = await authRequest.get<UserView>("")
+    const result = await authRequest.get<authData>("")
     return result.data
   } catch (err) {
     const error = err as AxiosError
@@ -148,10 +160,12 @@ const usersSlice = createSlice({
     })
     builder.addCase(userLogin.fulfilled, (state, { payload }) => {
       state.currentUser = payload.user
+      state.isAdmin = payload.isAdmin
       window.localStorage.setItem("access_token", payload.access_token)
     })
-    builder.addCase(isUser.fulfilled, (state, { payload }) => {
-      state.currentUser = payload
+    builder.addCase(isAuth.fulfilled, (state, { payload }) => {
+      state.currentUser = payload.user
+      state.isAdmin = payload.isAdmin
     })
   },
 })

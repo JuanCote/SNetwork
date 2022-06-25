@@ -44,6 +44,7 @@ namespace SocialNetworkBackEnd
             services.AddTransient<IPostService, PostService>();
             services.AddTransient<IPostRepository, PostRepository>();
             services.Configure<DbConnectionKeys>(Configuration.GetSection("DbConnectionKeys"));
+            services.AddControllers().AddNewtonsoftJson();
             services.AddAuthorization();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {

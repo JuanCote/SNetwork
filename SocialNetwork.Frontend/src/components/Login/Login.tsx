@@ -38,7 +38,7 @@ export const Login = () => {
     <div className={s.box}>
       <h1 className={s.title}>Вход</h1>
       <form className={s.form} onSubmit={form.onSubmit(submitHandler)}>
-        {isError && <ErrorAlert error={isError} />}
+        {isError !== "" && <ErrorAlert error={isError} />}
         <TextInput
           label='Электронная почта'
           {...form.getInputProps("email")}

@@ -101,7 +101,7 @@ namespace SocialNetworkBackEnd.Repository
                 conn.Open();
                 using NpgsqlCommand command =
                     new NpgsqlCommand($"update users set is_deleted = true " +
-                    $"where id = @id AND is_deleted = false", conn);
+                    $"where id = @id AND is_deleted = false AND is_admin = false", conn);
 
                 command.Parameters.AddWithValue("@id", id);
                 return command.ExecuteNonQuery() > 0 ? true : false;
@@ -174,6 +174,30 @@ namespace SocialNetworkBackEnd.Repository
                 Console.WriteLine($"Error occured in UserRepository.cs (FindUser) >>> {error.Message}");
             }
             return null;
+        }
+
+        public bool AdminCheck(Guid id)
+        {
+            try
+            {
+                using NpgsqlConnection conn = ConnectionKeys.ConfigureDbConnection();
+                conn.Open();
+                string query = "select is_admin from users where id = @id";
+                using NpgsqlCommand command = new NpgsqlCommand(query, conn)
+                {
+                    Parameters =
+                    {
+                        new NpgsqlParameter("@id", id),
+                    }
+                };
+                bool result = (bool)command.ExecuteScalar();
+                return result;
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine($"Error occured in UserRepository.cs (FindUser) >>> {error.Message}");
+            }
+            return false;
         }
 
         UserDB UserDbFromReader(NpgsqlDataReader reader)

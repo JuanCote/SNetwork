@@ -106,6 +106,9 @@ namespace SocialNetworkBackEnd.Services
             result.user = ConvertingUserModels.FromUserDomainToUserView(ConvertingUserModels.FromUserDBToUserDomain(userDB));
             return result;
         }
-        
+        public bool AdminCheck(Guid id)
+        {
+            return _userRepository.AdminCheck(id);
+        }
     }
 }

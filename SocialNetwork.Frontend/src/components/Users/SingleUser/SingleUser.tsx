@@ -6,7 +6,7 @@ import { UserMiniView } from "../../../models/userMiniView"
 import { FaTrashAlt } from "react-icons/fa"
 import { Button, Modal } from "@mantine/core"
 import { BsCheck2Circle } from "react-icons/bs"
-import { useTypedDispatch } from "../../../store/store"
+import { useTypedDispatch, useTypedSelector } from "../../../store/store"
 import { deleteUser } from "../../../store/slices/usersSlice"
 
 export const SingleUser: FC<UserMiniView> = ({
@@ -20,6 +20,7 @@ export const SingleUser: FC<UserMiniView> = ({
   const [modal, setModal] = useState(false)
   const [error, setError] = useState<string>("")
   const [isLoading, setIsLoading] = useState(false)
+  const { isAdmin } = useTypedSelector(state => state.users)
   const dispatcher = useTypedDispatch()
   const link = `/user/${id}`
   const deleteOneUser = async () => {
@@ -45,7 +46,9 @@ export const SingleUser: FC<UserMiniView> = ({
           </Link>
           {status && <p className={s.status}>{status}</p>}
           {age && <p className={s.age}>Возраст: {age}</p>}
-          <FaTrashAlt className={s.deleteIcon} onClick={() => setModal(true)} />
+          {isAdmin && (
+            <FaTrashAlt className={s.deleteIcon} onClick={() => setModal(true)} />
+          )}
         </div>
       </div>
       <Modal

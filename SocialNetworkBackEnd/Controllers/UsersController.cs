@@ -1,16 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using SocialNetworkBackEnd.Interafaces;
-using SocialNetworkBackEnd.Models.ViewModels;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using System;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using SocialNetworkBackEnd.Interafaces;
 using SocialNetworkBackEnd.Models.User.ViewModels;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.Extensions.Primitives;
+using SocialNetworkBackEnd.Models.ViewModels;
+using System;
+using System.Collections.Generic;
 
 namespace SocialNetworkBackEnd.Controllers
 {
+    
     [Route("[controller]")]
     [Produces("application/json")]
     [ApiController]
@@ -52,14 +51,23 @@ namespace SocialNetworkBackEnd.Controllers
             string result = _userService.AddUser(user);
             return result == Constants.GOOD ? Ok() : BadRequest(result);
         }
-
-        [HttpPost("delete/{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [Authorize]
-        public ActionResult DeleteUser(Guid id)
+        public class JsonId
         {
-            return _userService.DeleteUser(id) ? Ok(id) : NoContent();
+            public Guid id;
+        }
+        [HttpPost("delete")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize]
+        public ActionResult DeleteUser([FromBody] JsonId reqId)
+        {
+            Guid requestUserId = Guid.Parse(User.Identity.Name);
+            bool isAdmin = _userService.AdminCheck(requestUserId);
+            if (reqId.id != requestUserId && isAdmin == false)
+            {
+                return BadRequest("Обычный пользователь не может удалять других пользователей");
+            }
+            return _userService.DeleteUser(reqId.id) ? Ok(reqId.id) : BadRequest();
         }
 
         [HttpPost("edit/{id}")]
@@ -68,8 +76,8 @@ namespace SocialNetworkBackEnd.Controllers
         [Authorize]
         public ActionResult EditUser([FromBody] UserBlankEdit user, Guid id)
         {
-            return _userService.EditUser(user,id) ? Ok() : BadRequest();
+            return _userService.EditUser(user, id) ? Ok() : BadRequest();
         }
-
     }
+    
 }

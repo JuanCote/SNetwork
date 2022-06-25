@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using SocialNetworkBackEnd.Interafaces;
-using SocialNetworkBackEnd.Models.User;
 using SocialNetworkBackEnd.Models.User.ViewModels;
 using SocialNetworkBackEnd.Models.ViewModels;
 using System;
@@ -37,15 +36,20 @@ namespace SocialNetworkBackEnd.Controllers
                 issuer: AuthOptions.ISSUER,
                 audience: AuthOptions.AUDIENCE,
                 claims: claims,
-                expires: DateTime.UtcNow.Add(TimeSpan.FromDays(1)),
+                expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(30)),
                 signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256)
                 );
 
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
             return Ok(
-                new { access_token = encodedJwt, user = result.user }
-                );
+                new
+                {
+                    access_token = encodedJwt,
+                    user = result.user,
+                    isAdmin = _userService.AdminCheck(result.user.Id)
+                }
+            );
         }
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -57,7 +61,13 @@ namespace SocialNetworkBackEnd.Controllers
                 return Unauthorized();
             }
             UserView user = _userService.GetUserById(Guid.Parse(User.Identity.Name));
-            return Ok(user);
+            return Ok(
+                new
+                {
+                    user = user,
+                    isAdmin = _userService.AdminCheck(user.Id)
+                }
+            );
         }
 
     }

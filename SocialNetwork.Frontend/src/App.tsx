@@ -7,7 +7,7 @@ import { Profile } from "./components/Profile/Profile"
 import { ProfileEdit } from "./components/ProfileEdit/ProfileEdit"
 import { Register } from "./components/Register/Register"
 import { Users } from "./components/Users/Users"
-import { isUser } from "./store/slices/usersSlice"
+import { isAuth } from "./store/slices/usersSlice"
 import { useTypedDispatch } from "./store/store"
 import "./styles/index.sass"
 
@@ -15,7 +15,7 @@ const App: React.FC = () => {
   const dispatcher = useTypedDispatch()
   useEffect(() => {
     ;(async () => {
-      await dispatcher(isUser())
+      await dispatcher(isAuth())
     })()
   }, [])
   return (

@@ -15,7 +15,7 @@ export const Profile: FC = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [userError, setUserError] = useState<string>("Не удалось загрузить профиль")
   const [postsError, setPostsError] = useState<string>("Не удалось загрузить посты")
-
+  const { isAdmin } = useTypedSelector(state => state.users)
   const { user } = useTypedSelector(state => state.profile)
   const { posts } = useTypedSelector(state => state.posts)
   const dispatcher = useTypedDispatch()
@@ -61,9 +61,11 @@ export const Profile: FC = () => {
                 alt='avatar'
                 className={s.avatar}
               />
-              <Link className={s.editBtn} to={`/edit/${id}`}>
-                Редактировать
-              </Link>
+              {isAdmin && (
+                <Link className={s.editBtn} to={`/edit/${id}`}>
+                  Редактировать
+                </Link>
+              )}
             </div>
             <div className={s.secondPart}>
               <div className={s.contentBox}>
