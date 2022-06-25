@@ -27,7 +27,7 @@ namespace SocialNetworkBackEnd.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult Login([FromBody] UserLogin user)
         {
-            LoginResult result = _userService.FindUser(user);
+            LoginResult result = _userService.Login(user);
 
             if (result.status != Constants.GOOD) return BadRequest(result.status);
 

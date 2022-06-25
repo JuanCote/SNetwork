@@ -1,0 +1,70 @@
+@use '../../styles/variables'
+  
+.box
+  display: flex
+  align-items: center
+  justify-content: center
+
+.form
+  width: 600px
+  border-radius: 0.5rem
+  margin-top: 1.5rem
+
+
+.title
+  font-size: 1.5rem
+  margin-top: 0.5rem
+  padding-bottom: 1rem
+  position: relative
+  &::after
+    content: ""
+    width: calc(100% + 2rem)
+    left: 50%
+    right: 50%
+    transform: translate(-50%, -50%)
+    background: variables.$primary
+    height: 0.2rem
+    position: absolute
+    bottom: 0
+
+
+.wrapper
+  padding: 1rem
+  background: variables.$less-dark
+  position: relative
+
+
+.inputBox
+  display: flex
+  gap: 1rem
+  align-items: center
+
+
+.input
+  width: 100%
+  background-color: variables.$dark
+
+.label
+  width: 300px
+  font-size: 0.9rem
+  color: variables.$gray
+  line-height: 1.2rem
+  text-align: right
+
+.inputBox + .inputBox
+  margin-top: 1rem
+
+
+.labelTextBox
+  align-self: flex-start
+
+.button
+  background: variables.$darken-primary
+  display: block
+  margin: 0 auto
+  margin-top: 1rem
+  &:hover
+    background: variables.$primary
+
+.alert
+  margin-bottom: 1rem

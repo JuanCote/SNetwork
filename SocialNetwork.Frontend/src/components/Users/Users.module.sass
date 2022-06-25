@@ -1,0 +1,35 @@
+@use "../../styles/variables"
+  
+.section
+  width: 700px
+  background: variables.$less-dark
+  padding: 1rem 0rem 1rem 1.5rem
+  border-radius: 5px
+  position: relative
+  margin: 0 auto
+.title
+  font-size: 1.6rem
+  position: relative
+  padding: 0.8rem 0 1.5rem 0
+  &::after
+    content: ""
+    width: calc( 100% + 1.5rem )
+    position: absolute
+    height: 0.2rem
+    bottom: 0
+    background: variables.$primary
+    left: calc(50% - 0.75rem)
+    right: 50%
+    transform: translate(-50%, -50%)
+
+.users
+  max-height: 700px
+  margin-top: 0.5rem
+  position: relative
+
+.scroll
+  height: 710px
+  padding-right: 1.5rem
+
+.load
+  margin-right: 1.5rem

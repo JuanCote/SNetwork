@@ -1,0 +1,43 @@
+@use "../../styles/variables"
+
+$gap: 1.5rem
+$first-part: 250px
+
+
+.contentBox
+  padding: 1rem
+  background: variables.$less-dark
+  border-radius: 5px
+  height: min-content
+  position: relative
+
+.contentBox + .contentBox
+  margin-top: $gap
+
+.box
+  display: flex
+  gap: $gap
+  position: relative
+  min-height: 250px
+  justify-content: center
+
+.firstPart
+  width: $first-part
+  display: flex
+  justify-content: center
+  flex-direction: column
+
+.secondPart
+  width: calc( 919px - $first-part )
+
+.editBtn
+  padding: 0.6rem
+  margin-top: 1rem
+  text-align: center
+  background: variables.$darken-primary
+  color: white
+
+.avatar
+  aspect-ratio: 1 / 1
+  object-fit: cover
+

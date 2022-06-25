@@ -12,6 +12,6 @@ namespace SocialNetworkBackEnd.Interafaces
         string AddUser(UserBlank user);
         bool DeleteUser(Guid id);
         bool EditUser(UserBlankEdit user, Guid id);
-        LoginResult FindUser(UserLogin user);
+        LoginResult Login(UserLogin user);
     }
 }

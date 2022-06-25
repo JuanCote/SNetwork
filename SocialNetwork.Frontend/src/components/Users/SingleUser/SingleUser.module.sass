@@ -1,0 +1,74 @@
+@use '../../../styles/variables'
+  
+.wrapper
+  padding: 1rem 0rem
+  display: flex
+  gap: 1rem
+  position: relative
+  &:hover
+    .deleteIcon
+      display: block
+    
+  
+.wrapper + .wrapper
+  border-top: 1px solid variables.$dark-grey
+
+.avatar
+  aspect-ratio: 1 / 1
+  width: 100px
+  border-radius: 100%
+  object-fit: cover
+
+.name
+  color: variables.$link
+  font-weight: 400
+  font-size: 1.3rem
+  margin-top: 0.5rem
+  display: block
+
+.ageAndNameWrapper
+  display: flex
+  align-items: center
+  gap: 0.8rem
+
+
+.content
+  display: flex
+  flex-direction: column
+  gap: 0.7rem
+
+.deleteIcon
+  color: variables.$red
+  font-size: 1.5rem
+  position: absolute
+  right: 0
+  top: 50%
+  transform: translateY(-50%)
+  display: none
+  cursor: pointer
+
+.btnWrapper
+  margin-top: 1rem
+  display: flex
+  justify-content: center
+  gap: 1rem
+  align-items: center
+
+.modal
+  height: 250px
+  display: flex
+  align-items: center
+  justify-content: center
+  text-align: center
+
+.goodIcon
+  font-size: 2rem
+  color: variables.$green
+
+.goodNotification
+  display: flex
+  align-items: center
+  gap: 0.5rem
+
+.errorText
+  line-height: 1.2rem

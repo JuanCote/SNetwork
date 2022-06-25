@@ -1,0 +1,59 @@
+@use '../../styles/variables'
+
+.form
+  width: 450px
+  padding: 1.5rem
+  border-radius: 0.2rem
+  position: relative
+  border: 3px solid variables.$primary 
+
+.wrapper
+  display: flex
+  flex-direction: column
+  gap: 1rem
+  align-items: center
+  justify-content: center
+  margin: 0 auto
+  width: 700px
+  margin-top: 1rem
+
+.section
+  margin-top: 3rem
+  width: 100%
+
+.button
+  margin: 25px auto 0px auto
+  display: block
+  background: variables.$darken-primary
+  &:hover
+    background: variables.$primary
+    transition: 0.2s
+
+.input
+  margin-top: 0.8rem
+
+.title
+  color: white
+  font-size: 2rem
+  font-weight: 500
+  margin-bottom: 0.3rem
+
+
+.errAndTitle
+  display: flex
+  flex-direction: column
+  width: 100%
+  gap: 1rem
+  align-items: center
+
+.nameAndSurnameWrap
+  display: flex
+  justify-content: space-between
+  gap:1rem
+  align-items: flex-start
+  & .input
+    width: 50%
+    
+
+.error
+  max-width: 450px

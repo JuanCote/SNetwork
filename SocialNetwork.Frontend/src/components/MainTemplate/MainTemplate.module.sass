@@ -1,0 +1,63 @@
+@use "../../styles/variables"
+  
+header
+  background: variables.$less-dark
+
+.wrapper
+  padding: 1rem 0
+  display: flex
+  justify-content: space-between
+
+.box
+  display: flex
+  align-items: center
+  gap: 0.75rem
+  color: white
+  margin-left: 0.5rem
+
+.menuAndContentWrapper
+  margin-top: 50px
+  display: flex
+  gap: 0.5rem
+
+
+.navItem
+  display: flex
+  gap: 0.5rem
+  align-items: center
+  font-size: 1rem
+  color: white
+  text-decoration: none
+  padding: 0.5rem
+  border-radius: 0.2rem
+  &:hover
+    background: variables.$less-dark
+    transition: all 0.2s
+
+.active
+  background: variables.$less-dark
+    
+.mainContent
+  width: 919px
+
+.navIcon
+  color: variables.$primary
+  font-size: 1.2em
+
+
+.user
+  display: flex
+  gap: 1rem
+  align-items: center
+
+.avatar
+  width: 50px
+  height: 50px
+  border-radius: 100%
+  aspect-ratio: 1 / 1
+
+.btn
+  background: variables.$darken-primary
+  transition: 0.1s
+  &:hover
+    background: variables.$primary

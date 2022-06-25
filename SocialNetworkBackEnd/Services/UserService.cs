@@ -80,7 +80,7 @@ namespace SocialNetworkBackEnd.Services
             }
             return _userRepository.EditUser(ConvertingUserModels.EditConvertUserBlankToUserDb(user, id));
         }
-        public LoginResult FindUser(UserLogin user)
+        public LoginResult Login(UserLogin user)
         {
             LoginResult result = new LoginResult();
             if (user.Email == "" || user.Password == "")
