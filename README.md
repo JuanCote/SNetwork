@@ -1,4 +1,4 @@
-# SocialNetworkBackEnd
+# SNetwork😶‍🌫️
 
 frontend - react with typescript, redux-toolkit, axios😶‍🌫️
 
