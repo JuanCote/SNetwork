@@ -10,4 +10,4 @@ in order to work you need launh my Server😴
 
 but you also need to connect your database🤕
 
-when project is gonna be mvp state, im gonna buy host🥸
+when the project will be mvp state, im gonna buy host🥸
