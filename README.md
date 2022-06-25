@@ -1,5 +1,7 @@
 # SocialNetworkBackEnd
 
-backend writen on c# at asp.net5 😶‍🌫️
+frontend - react with typescript, redux-toolkit, axios😶‍🌫️
 
-db that i use - postgres
+backend - c#, asp.net5 web api 😶‍🌫️
+
+db that i use - postgres 😶‍🌫️
