@@ -16,6 +16,7 @@ namespace SocialNetworkBackEnd.Models.Post
                 post.Text,
                 post.CreationDate,
                 post.IsDeleted,
+                post.PostOwner,
                 post.Name,
                 post.Surname,
                 post.Avatar
@@ -39,7 +40,8 @@ namespace SocialNetworkBackEnd.Models.Post
                 post.UserId,
                 post.Text,
                 DateTime.Now,
-                false
+                false,
+                post.PostOwner
                 );
         }
         public static PostDB FromPostDomainToPostDB(PostDomain post)
@@ -51,6 +53,7 @@ namespace SocialNetworkBackEnd.Models.Post
                 post.CreationDate,
                 null,
                 post.IsDeleted,
+                post.PostOwner,
                 post.Avatar,
                 post.Name,
                 post.Surname

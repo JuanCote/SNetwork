@@ -41,6 +41,7 @@ namespace SocialNetworkBackEnd.Repository
                         (DateTime)reader.GetValue("creation_date"),
                         Utils.ConvertFromDBVal<DateTime>(reader.GetValue("modified_date")),
                         (bool)reader.GetValue("is_deleted"),
+                        (Guid)reader.GetValue("post_owner"),
                         (string)reader.GetValue("avatar"),
                         (string)reader.GetValue("name"),
                         (string)reader.GetValue("surname")
@@ -111,6 +112,7 @@ namespace SocialNetworkBackEnd.Repository
                          (DateTime)reader.GetValue("creation_date"),
                          Utils.ConvertFromDBVal<DateTime>(reader.GetValue("modified_date")),
                          (bool)reader.GetValue("is_deleted"),
+                         (Guid)reader.GetValue("post_owner"),
                          (string)reader.GetValue("avatar"),
                          (string)reader.GetValue("name"),
                          (string)reader.GetValue("surname")

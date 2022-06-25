@@ -25,7 +25,6 @@ namespace SocialNetworkBackEnd.Services
         public PostView AddPost(PostBlank post)
         {
             string textForCheck = post.Text.Replace("<p>", "").Replace("</p>", "");
-            Console.WriteLine(textForCheck);
             if (post.Text == "<p><br></p>" || string.IsNullOrWhiteSpace(textForCheck) || textForCheck == "") 
             {
                 return null;

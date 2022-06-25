@@ -13,12 +13,14 @@ namespace SocialNetworkBackEnd.Models.Post
         public string? Avatar { get; set; }
         public string? Name { get; set; }
         public string? Surname { get; set; }
+        public Guid PostOwner { get; set; }
         public PostDB(Guid id,
                       Guid userId,
                       string text,
                       DateTime creationDate,
                       DateTime? modifiedDate,
                       bool isDeleted,
+                      Guid postOwner,
                       string? avatar,
                       string? name,
                       string? surname
@@ -33,6 +35,7 @@ namespace SocialNetworkBackEnd.Models.Post
             Avatar = avatar;
             Name = name;
             Surname = surname;
+            PostOwner = postOwner;
         }
     }
 }

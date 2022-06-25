@@ -12,9 +12,10 @@ namespace SocialNetworkBackEnd.Models.Post
         public string? Name { get; set; }
         public string? Surname { get; set; }
         public string? Avatar { get; set; }
-        public PostDomain(Guid id, Guid userId, string text, DateTime creationDate, bool isDeleted) 
-            : this(id, userId, text, creationDate, isDeleted, null, null, null) { }
-        public PostDomain(Guid id, Guid userId, string text, DateTime creationDate, bool isDeleted, string name, string surname, string avatar)
+        public Guid PostOwner { get; set; }
+        public PostDomain(Guid id, Guid userId, string text, DateTime creationDate, bool isDeleted, Guid postOwner) 
+            : this(id, userId, text, creationDate, isDeleted, postOwner, null, null, null) { }
+        public PostDomain(Guid id, Guid userId, string text, DateTime creationDate, bool isDeleted, Guid postOwner, string name, string surname, string avatar)
         {
             Id = id;
             UserId = userId;
@@ -24,6 +25,7 @@ namespace SocialNetworkBackEnd.Models.Post
             Name = name;
             Surname = surname;
             Avatar = avatar;
+            PostOwner = postOwner;
         }
 
     }
