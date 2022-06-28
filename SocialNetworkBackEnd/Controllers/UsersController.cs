@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SocialNetworkBackEnd.Interafaces;
+using SocialNetworkBackEnd.Interafaces.User;
 using SocialNetworkBackEnd.Models.User.ViewModels;
 using SocialNetworkBackEnd.Models.ViewModels;
 using System;
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace SocialNetworkBackEnd.Controllers
 {
-    
+
     [Route("[controller]")]
     [Produces("application/json")]
     [ApiController]

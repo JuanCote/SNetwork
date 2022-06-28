@@ -3,7 +3,7 @@ using SocialNetworkBackEnd.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 
-namespace SocialNetworkBackEnd.Interafaces
+namespace SocialNetworkBackEnd.Interafaces.User
 {
     public interface IUserService
     {

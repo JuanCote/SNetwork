@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using SocialNetworkBackEnd.Interafaces;
+using SocialNetworkBackEnd.Interafaces.User;
 using SocialNetworkBackEnd.Models.User.ViewModels;
 using SocialNetworkBackEnd.Models.ViewModels;
 using System;

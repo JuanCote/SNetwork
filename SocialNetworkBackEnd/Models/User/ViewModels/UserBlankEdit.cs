@@ -12,24 +12,6 @@ namespace SocialNetworkBackEnd.Models.User.ViewModels
         public string? Avatar { get; set; }
         public string? Description { get; set; }
         public string? Status { get; set; }
-        //public EditUserBlank(string name,
-        //                 string surname,
-        //                 int? age,
-        //                 string? avatar,
-        //                 string? description,
-        //                 string? status,
-        //                 string email,
-        //                 string password)
-        //{
-        //    Name = name;
-        //    Surname = surname;
-        //    Age = age;
-        //    Avatar = avatar;
-        //    Description = description;
-        //    Status = status;
-        //    Email = email;
-        //    Password = password;
-        //}
-        public UserBlankEdit() { } //TODO: спросить почему выбрасывает 500 ошибку без пустого конструктора
+        public UserBlankEdit() { }
     }
 }

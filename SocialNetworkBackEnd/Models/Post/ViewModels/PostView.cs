@@ -11,7 +11,8 @@ namespace SocialNetworkBackEnd.Models.Post.ViewModels
         public string Name { get; set; }
         public string Surname { get; set; }
         public DateTime CreationDate { get; set; }
-        public PostView(Guid id, string text, string avatar, string name, string surname, DateTime creationDate)
+        public Guid PostOwner { get; set; }
+        public PostView(Guid id, string text, string avatar, string name, string surname, DateTime creationDate, Guid postOwner)
         {
             Id = id;
             Text = text;
@@ -19,6 +20,7 @@ namespace SocialNetworkBackEnd.Models.Post.ViewModels
             Name = name;
             Surname = surname;
             CreationDate = creationDate;
+            PostOwner = postOwner;
         }
     }
 }

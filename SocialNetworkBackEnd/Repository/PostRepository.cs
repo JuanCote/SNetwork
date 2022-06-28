@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Npgsql;
-using SocialNetworkBackEnd.Interafaces;
+using SocialNetworkBackEnd.Interafaces.Post;
 using SocialNetworkBackEnd.Models.Post;
 using SocialNetworkBackEnd.Properties;
 using System;
@@ -26,7 +26,7 @@ namespace SocialNetworkBackEnd.Repository
                 var query =
                     "select posts.*, name, surname, avatar " +
                     "from posts join users " +
-                    "on users.id = posts.user_id " +
+                    "on users.id = posts.post_owner " +
                     $"where posts.is_deleted = @param and posts.user_id = @id";
                 using NpgsqlCommand selectPosts = new NpgsqlCommand(query, connection);
                 selectPosts.Parameters.AddWithValue("@param", showIsDeleted);
@@ -61,8 +61,8 @@ namespace SocialNetworkBackEnd.Repository
                 using NpgsqlConnection connection = ConnectionKeys.ConfigureDbConnection();
                 connection.Open();
                 string query =
-                    "insert into posts " +
-                    "values (@id, @user_id, @post_text, @creation_date, @modified_date)";
+                    "insert into posts (id, user_id, post_text, creation_date, modified_date, post_owner) " +
+                    "values (@id, @user_id, @post_text, @creation_date, @modified_date, @post_owner)";
                 using NpgsqlCommand addPost = new NpgsqlCommand(query, connection)
                 {
                     Parameters =
@@ -72,6 +72,7 @@ namespace SocialNetworkBackEnd.Repository
                         new NpgsqlParameter("@post_text", post.Text),
                         new NpgsqlParameter("@creation_date", post.CreationDate),
                         new NpgsqlParameter("@modified_date", post.ModifiedDate == null ? DBNull.Value : post.ModifiedDate),
+                        new NpgsqlParameter("@post_owner", post.PostOwner),
                     }
                 };
                 int rows = addPost.ExecuteNonQuery();
@@ -93,7 +94,7 @@ namespace SocialNetworkBackEnd.Repository
                 string query =
                     "select posts.*, name, surname, avatar " +
                     "from posts join users " +
-                    "on users.id = posts.user_id " +
+                    "on users.id = posts.post_owner " +
                     $"where posts.id = @id";
                 using NpgsqlCommand addPost = new NpgsqlCommand(query, connection)
                 {
@@ -113,7 +114,7 @@ namespace SocialNetworkBackEnd.Repository
                          Utils.ConvertFromDBVal<DateTime>(reader.GetValue("modified_date")),
                          (bool)reader.GetValue("is_deleted"),
                          (Guid)reader.GetValue("post_owner"),
-                         (string)reader.GetValue("avatar"),
+                         Utils.ConvertFromDBVal<string>(reader.GetValue("avatar")),
                          (string)reader.GetValue("name"),
                          (string)reader.GetValue("surname")
                      );

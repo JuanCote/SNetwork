@@ -30,7 +30,8 @@ namespace SocialNetworkBackEnd.Models.Post
                 post.Avatar,
                 post.Name,
                 post.Surname,
-                post.CreationDate
+                post.CreationDate,
+                post.PostOwner
                 );
         }
         public static PostDomain FromPostBlankToPostDomain(PostBlank post)

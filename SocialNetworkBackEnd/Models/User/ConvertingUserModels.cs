@@ -7,7 +7,7 @@ namespace SocialNetworkBackEnd.Models.User
     /// <summary>
     /// Конвертация моделей пользователя.
     /// </summary>
-    public static class ConvertingUserModels
+    public static class ConvertingSubModels
     {
         public static UserDB FromUserDomainToUserDB(UserDomain user)
         {

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SocialNetworkBackEnd.Interafaces
+namespace SocialNetworkBackEnd.Interafaces.Post
 {
     public interface IPostRepository
     {

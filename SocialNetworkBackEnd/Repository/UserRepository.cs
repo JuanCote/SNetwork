@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Npgsql;
-using SocialNetworkBackEnd.Interafaces;
+using SocialNetworkBackEnd.Interafaces.User;
 using SocialNetworkBackEnd.Models.User;
 using SocialNetworkBackEnd.Properties;
 using System;
@@ -77,7 +77,7 @@ namespace SocialNetworkBackEnd.Repository
                         new NpgsqlParameter("@name", user.Name),
                         new NpgsqlParameter("@surname", user.Surname),
                         new NpgsqlParameter("@age", user.Age == null ? DBNull.Value : user.Age),
-                        new NpgsqlParameter("@avatar", user.Avatar == null ? DBNull.Value : user.Avatar),
+                        new NpgsqlParameter("@avatar", user.Avatar == "" ? DBNull.Value : user.Avatar),
                         new NpgsqlParameter("@description", user.Description == null ? DBNull.Value : user.Description),
                         new NpgsqlParameter("@status", user.Status == null ? DBNull.Value : user.Status),
                         new NpgsqlParameter("@creation_date", user.CreationDate),
@@ -140,7 +140,8 @@ namespace SocialNetworkBackEnd.Repository
                         new NpgsqlParameter("@id", user.Id),
                     }
                 };
-                return command.ExecuteNonQuery() > 0 ? true : false;
+                int rows = command.ExecuteNonQuery();
+                return rows > 0 ? true : false;
             }
             catch (Exception error)
             {

@@ -1,4 +1,4 @@
-﻿using SocialNetworkBackEnd.Interafaces;
+﻿using SocialNetworkBackEnd.Interafaces.Post;
 using SocialNetworkBackEnd.Models.Post;
 using SocialNetworkBackEnd.Models.Post.ViewModels;
 using SocialNetworkBackEnd.Models.User.ViewModels;
@@ -41,11 +41,6 @@ namespace SocialNetworkBackEnd.Services
         public Guid? deletePost(Guid id)
         {
             return _postRepository.deletePost(id);
-        }
-
-        public string FindUser(UserLogin user)
-        {
-            return "email not found";
         }
     }
 }

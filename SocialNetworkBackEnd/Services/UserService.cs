@@ -1,4 +1,4 @@
-﻿using SocialNetworkBackEnd.Interafaces;
+﻿using SocialNetworkBackEnd.Interafaces.User;
 using SocialNetworkBackEnd.Models.User;
 using SocialNetworkBackEnd.Models.User.ViewModels;
 using SocialNetworkBackEnd.Models.ViewModels;
@@ -19,18 +19,19 @@ namespace SocialNetworkBackEnd.Services
         public IEnumerable<UserMiniView> GetUsers()
         {
             IEnumerable<UserDB> users = _userRepository.GetUsers(false);
-            return users.Select(ConvertingUserModels.FromUserDBToUserDomain)
-                        .Select(ConvertingUserModels.FromUserDomainToUserMiniView);
+            return users.Select(ConvertingSubModels.FromUserDBToUserDomain)
+                        .Select(ConvertingSubModels.FromUserDomainToUserMiniView);
         }
         public UserView GetUserById(Guid id)
         {
-            return ConvertingUserModels.FromUserDomainToUserView(
-                ConvertingUserModels.FromUserDBToUserDomain(_userRepository.GetUserById(id))
+            return ConvertingSubModels.FromUserDomainToUserView(
+                ConvertingSubModels.FromUserDBToUserDomain(_userRepository.GetUserById(id))
                 );
         }
         public string AddUser(UserBlank user)
         {
             Guid id = Guid.NewGuid();
+            user.Avatar = user.Avatar.Trim();
             if (user.Avatar != "")
             {
                 Regex regexAvatar = new Regex(@"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)");
@@ -61,7 +62,7 @@ namespace SocialNetworkBackEnd.Services
             }
             if (!user.Email.Contains("@")) return "Адрес почты неверный";
             if (user.Password.Length < 5) return "Пароль слишком короткий";
-            bool result = _userRepository.AddUser(ConvertingUserModels.InsertConvertUserBlankToUserDb(user, id));
+            bool result = _userRepository.AddUser(ConvertingSubModels.InsertConvertUserBlankToUserDb(user, id));
             return result ? Constants.GOOD : "Такой адрес электронной почты существует";
         }
         public bool DeleteUser(Guid id)
@@ -78,7 +79,7 @@ namespace SocialNetworkBackEnd.Services
             {
                 return false;
             }
-            return _userRepository.EditUser(ConvertingUserModels.EditConvertUserBlankToUserDb(user, id));
+            return _userRepository.EditUser(ConvertingSubModels.EditConvertUserBlankToUserDb(user, id));
         }
         public LoginResult Login(UserLogin user)
         {
@@ -103,7 +104,7 @@ namespace SocialNetworkBackEnd.Services
                 return result;
             }
             result.status = Constants.GOOD;
-            result.user = ConvertingUserModels.FromUserDomainToUserView(ConvertingUserModels.FromUserDBToUserDomain(userDB));
+            result.user = ConvertingSubModels.FromUserDomainToUserView(ConvertingSubModels.FromUserDBToUserDomain(userDB));
             return result;
         }
         public bool AdminCheck(Guid id)

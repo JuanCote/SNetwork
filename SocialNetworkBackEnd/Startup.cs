@@ -13,11 +13,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SocialNetworkBackEnd.Repository;
-using SocialNetworkBackEnd.Interafaces;
 using SocialNetworkBackEnd.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
+using SocialNetworkBackEnd.Interafaces.Post;
+using SocialNetworkBackEnd.Interafaces.User;
+using SocialNetworkBackEnd.Interafaces.Sub;
 
 namespace SocialNetworkBackEnd
 {
@@ -41,8 +43,13 @@ namespace SocialNetworkBackEnd
             });
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserService, UserService>();
+
             services.AddTransient<IPostService, PostService>();
             services.AddTransient<IPostRepository, PostRepository>();
+
+            services.AddTransient<ISubRepository, SubRepository>();
+            services.AddTransient<ISubService, SubService>();
+
             services.Configure<DbConnectionKeys>(Configuration.GetSection("DbConnectionKeys"));
             services.AddControllers().AddNewtonsoftJson();
             services.AddAuthorization();
