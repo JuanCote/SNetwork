@@ -5,4 +5,5 @@ export interface postView {
   name: string
   surname: string
   creationDate: Date
+  postOwner: string
 }

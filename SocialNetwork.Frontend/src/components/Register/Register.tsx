@@ -16,7 +16,7 @@ import { MyLoadingOverlay } from "../Common/MyLoadingOverlay"
 import s from "./Register.module.sass"
 
 const isImage = (url: string) => {
-  return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url)
+  return /\.(jpg|jpeg|png|webp|avif|gif|svg)/.test(url)
 }
 
 const regex =
@@ -54,11 +54,11 @@ export const Register = () => {
       surname: value =>
         value.length <= 2 ? "Фамилия должна содержать минимум 3 символа" : null,
       avatar: value => {
-        if (value === "") return null
+        if (value.trim() === "") return null
         if (!isImage(value)) {
           return "Не валидная ссылка на аватар"
         }
-        return regex.test(value) ? null : "Не валидная ссылка на аватар"
+        return null
       },
       age: value => {
         const numberValue = +value

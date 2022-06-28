@@ -5,6 +5,7 @@ import axios, { AxiosError } from "axios"
 import { UserFormData } from "../../models/formData"
 import { UserMiniView } from "../../models/userMiniView"
 import { authRequest } from "../../requests/http"
+import defaultImg from "../../img/default.jpg"
 
 interface stateInterface {
   loadingFullScreen: boolean
@@ -120,7 +121,7 @@ interface authData {
   isAdmin: boolean
 }
 
-export const isAuth = createAsyncThunk("users/isUser", async (_, { rejectWithValue }) => {
+export const isAuth = createAsyncThunk("users/isAuth", async (_, { rejectWithValue }) => {
   try {
     const result = await authRequest.get<authData>("")
     return result.data
@@ -148,6 +149,7 @@ const usersSlice = createSlice({
       state.usersList = []
       payload?.forEach(elem => {
         if (elem.age === 0) elem.age = undefined
+        elem.avatar = elem.avatar ?? defaultImg
         state.usersList.push(elem)
       })
     })
@@ -160,12 +162,21 @@ const usersSlice = createSlice({
     })
     builder.addCase(userLogin.fulfilled, (state, { payload }) => {
       state.currentUser = payload.user
+      state.currentUser.avatar = state.currentUser.avatar ?? defaultImg
       state.isAdmin = payload.isAdmin
       window.localStorage.setItem("access_token", payload.access_token)
     })
     builder.addCase(isAuth.fulfilled, (state, { payload }) => {
       state.currentUser = payload.user
+      state.currentUser.avatar = state.currentUser.avatar ?? defaultImg
       state.isAdmin = payload.isAdmin
+      state.loadingFullScreen = false
+    })
+    builder.addCase(isAuth.pending, state => {
+      state.loadingFullScreen = true
+    })
+    builder.addCase(isAuth.rejected, state => {
+      state.loadingFullScreen = false
     })
   },
 })

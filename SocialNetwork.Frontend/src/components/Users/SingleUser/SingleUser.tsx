@@ -38,7 +38,7 @@ export const SingleUser: FC<UserMiniView> = ({
     <>
       <div className={s.wrapper}>
         <Link to={link}>
-          <img src={avatar ? avatar : defaultImg} alt='avatar' className={s.avatar} />
+          <img src={avatar} alt='avatar' className={s.avatar} />
         </Link>
         <div className={s.content}>
           <Link className={s.name} to={link}>

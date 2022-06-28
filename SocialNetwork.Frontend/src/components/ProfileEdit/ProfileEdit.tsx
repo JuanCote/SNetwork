@@ -31,6 +31,7 @@ export const ProfileEdit = () => {
     // }
   })
   const editSingleUser = async (values: UserFormData) => {
+    console.log(values)
     try {
       setError("")
       setIsLoading(true)

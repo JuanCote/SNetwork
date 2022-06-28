@@ -3,7 +3,7 @@ import { RichTextEditor } from "@mantine/rte"
 import { Button, LoadingOverlay } from "@mantine/core"
 import s from "./PostForm.module.sass"
 import { useClickOutside } from "@mantine/hooks"
-import { useTypedDispatch } from "../../../store/store"
+import { useTypedDispatch, useTypedSelector } from "../../../store/store"
 import { ErrorAlert } from "../../Common/ErrorAlert"
 import { addPost } from "../../../store/slices/postsSlice"
 import { postBlank } from "../../../models/PostBlank"
@@ -26,6 +26,7 @@ export const PostForm: FC<Props> = ({ id }) => {
   const [bigEditor, setBigEditor] = useState<boolean>(false)
   const [isError, setIsError] = useState<string>("")
   const [isLoading, setIsLoading] = useState(false)
+  const { id: userId } = useTypedSelector(state => state.users.currentUser)
   const dispatcher = useTypedDispatch()
   const ref = useClickOutside(() => {
     console.log(value)
@@ -34,12 +35,13 @@ export const PostForm: FC<Props> = ({ id }) => {
       setBigEditor(false)
     }
   })
-  const richRef = useRef()
   const submitHandler = async () => {
     const newPost: postBlank = {
       UserId: id,
       Text: value,
+      PostOwner: userId,
     }
+    console.log(newPost)
     try {
       setIsError("")
       setIsLoading(true)

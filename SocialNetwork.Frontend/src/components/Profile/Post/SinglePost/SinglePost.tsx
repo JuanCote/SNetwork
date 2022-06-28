@@ -6,6 +6,7 @@ import parse from "html-react-parser"
 import { BsThreeDotsVertical } from "react-icons/bs"
 import { useTypedDispatch } from "../../../../store/store"
 import { deletePost } from "../../../../store/slices/postsSlice"
+import { Link } from "react-router-dom"
 
 const parseDate = (creationDate: Date): string => {
   let month = ""
@@ -58,6 +59,7 @@ export const SinglePost: FC<postView> = ({
   creationDate,
   text,
   avatar,
+  postOwner,
 }) => {
   const ref = useRef<HTMLDivElement>(null)
   const dispatcher = useTypedDispatch()
@@ -68,6 +70,7 @@ export const SinglePost: FC<postView> = ({
       console.log(err)
     }
   }
+  const link = `/user/${postOwner}`
   return (
     <>
       <div className={s.menu}>
@@ -84,11 +87,13 @@ export const SinglePost: FC<postView> = ({
         </div>
       </div>
       <div className={s.firstBlock}>
-        <img src={avatar ? avatar : defaultImg} alt='none' className={s.postImg} />
+        <Link to={link }>
+          <img src={avatar ? avatar : defaultImg} alt='none' className={s.postImg} />
+        </Link>
         <div className={s.textBlock}>
-          <p className={s.name}>
+          <Link to={link} className={s.name}>
             {name} {surname}
-          </p>
+          </Link>
           <p className={s.date}>{parseDate(creationDate)}</p>
         </div>
       </div>

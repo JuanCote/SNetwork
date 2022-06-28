@@ -3,6 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit"
 import { createSlice } from "@reduxjs/toolkit"
 import axios, { AxiosError } from "axios"
 import { UserView } from "../../models/userView"
+import defaultImg from "../../img/default.jpg"
 
 interface profileSlice {
   user: UserView
@@ -36,6 +37,7 @@ const profileSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(getUser.fulfilled, (state, { payload }) => {
       state.user = payload
+      state.user.avatar = state.user.avatar ?? defaultImg
     })
   },
 })

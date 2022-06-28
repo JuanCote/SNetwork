@@ -14,10 +14,12 @@ import { ErrorAlert } from "../Common/ErrorAlert"
 export const Profile: FC = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [userError, setUserError] = useState<string>("Не удалось загрузить профиль")
-  const [postsError, setPostsError] = useState<string>("Не удалось загрузить посты")
+  const [postsError, setPostsError] = useState<string>("")
   const { isAdmin } = useTypedSelector(state => state.users)
   const { user } = useTypedSelector(state => state.profile)
   const { posts } = useTypedSelector(state => state.posts)
+  const { id: userId } = useTypedSelector(state => state.users.currentUser)
+
   const dispatcher = useTypedDispatch()
 
   const redirect = useNavigate()
@@ -47,6 +49,7 @@ export const Profile: FC = () => {
     })()
   }, [id])
   const userExists = JSON.stringify(user) === "{}"
+  const condition = isAdmin || userId === id
   return (
     <>
       <div className={s.box}>
@@ -56,12 +59,8 @@ export const Profile: FC = () => {
         ) : (
           <>
             <div className={`${s.contentBox} ${s.firstPart}`}>
-              <img
-                src={user?.avatar ? user.avatar : defaultImg}
-                alt='avatar'
-                className={s.avatar}
-              />
-              {isAdmin && (
+              <img src={user.avatar} alt='avatar' className={s.avatar} />
+              {condition && (
                 <Link className={s.editBtn} to={`/edit/${id}`}>
                   Редактировать
                 </Link>

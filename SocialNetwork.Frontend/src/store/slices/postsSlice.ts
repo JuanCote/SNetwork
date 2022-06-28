@@ -1,3 +1,4 @@
+import { postRequest } from "./../../requests/http"
 import { postBlank } from "../../models/PostBlank"
 import { postView } from "../../models/PostView"
 import { createAsyncThunk, current } from "@reduxjs/toolkit"
@@ -16,7 +17,7 @@ export const addPost = createAsyncThunk(
   "posts/addPost",
   async (action: postBlank, { rejectWithValue }) => {
     try {
-      const response = await axios.post<postView>("https://localhost:44397/Posts", action)
+      const response = await postRequest.post<postView>("", action)
       return response.data
     } catch (err) {
       const error = err as AxiosError
@@ -32,9 +33,7 @@ export const getPosts = createAsyncThunk(
   "posts/getPosts",
   async (action: string | undefined, { rejectWithValue }) => {
     try {
-      const response = await axios.get<postView[]>(
-        `https://localhost:44397/Posts/${action}`
-      )
+      const response = await postRequest.get<postView[]>(`/${action}`)
       return response.data
     } catch (err) {
       const error = err as AxiosError
@@ -50,9 +49,7 @@ export const deletePost = createAsyncThunk(
   "posts/deletePost",
   async (action: string, { rejectWithValue }) => {
     try {
-      const response = await axios.post<string>(
-        `https://localhost:44397/Posts/delete/${action}`
-      )
+      const response = await postRequest.post<string>(`/delete/${action}`)
       return response.data
     } catch (err) {
       const error = err as AxiosError
