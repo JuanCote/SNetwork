@@ -9,7 +9,6 @@ import { useTypedDispatch, useTypedSelector } from "../../store/store"
 import { Logo } from "../Common/Logo"
 import { MyLoadingOverlay } from "../Common/MyLoadingOverlay"
 import s from "./MainTemplate.module.sass"
-import defaultImg from "../../img/default.jpg"
 
 export const MainTemplate = () => {
   const isLoading = useTypedSelector(state => state.users.loadingFullScreen)
@@ -34,11 +33,7 @@ export const MainTemplate = () => {
             {currUserExist && (
               <div className={s.user}>
                 <Link to={`/user/${currentUser.id}`}>
-                  <img
-                    src={currentUser.avatar}
-                    alt='avatar'
-                    className={s.avatar}
-                  />
+                  <img src={currentUser.avatar} alt='avatar' className={s.avatar} />
                 </Link>
                 <Button className={s.btn} onClick={logout}>
                   Выйти

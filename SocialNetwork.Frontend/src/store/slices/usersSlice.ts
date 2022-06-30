@@ -28,7 +28,6 @@ export const fetchUsers = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await userRequest.get<UserMiniView[]>("/Users") // Получаем всех пользователей
-      console.log(response)
       return response.data
     } catch (err) {
       const error = err as AxiosError
