@@ -6,7 +6,7 @@ backend - c#, asp.net5 web api 😶‍🌫️
 
 db that i use - postgres 😶‍🌫️
 
-in order to work you need launh my Server😴
+in order to work you need to launh my Server😴
 
 but you also need to connect your database🤕
 
