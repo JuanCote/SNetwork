@@ -13,6 +13,10 @@ export const postRequest = axios.create({
   baseURL: `${base}/Posts`,
 })
 
+export const subRequest = axios.create({
+  baseURL: `${base}/Sub`,
+})
+
 const authFunc = (request: AxiosRequestConfig<any>) => {
   const token = window.localStorage.getItem("access_token")
   request.headers = {
@@ -20,6 +24,8 @@ const authFunc = (request: AxiosRequestConfig<any>) => {
   }
   return request
 }
+
+subRequest.interceptors.request.use(authFunc)
 
 postRequest.interceptors.request.use(authFunc)
 

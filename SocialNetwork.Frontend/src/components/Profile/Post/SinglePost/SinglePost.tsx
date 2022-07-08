@@ -4,7 +4,7 @@ import defaultImg from "../../../../img/default.jpg"
 import { postView } from "../../../../models/PostView"
 import parse from "html-react-parser"
 import { BsThreeDotsVertical } from "react-icons/bs"
-import { useTypedDispatch } from "../../../../store/store"
+import { useTypedDispatch, useTypedSelector } from "../../../../store/store"
 import { deletePost } from "../../../../store/slices/postsSlice"
 import { Link } from "react-router-dom"
 
@@ -62,32 +62,34 @@ export const SinglePost: FC<postView> = ({
   postOwner,
 }) => {
   const ref = useRef<HTMLDivElement>(null)
+  const loggedId = useTypedSelector(state => state.users.currentUser.id)
+  const isAdmin = useTypedSelector(state => state.users.isAdmin)
   const dispatcher = useTypedDispatch()
   const clickHandler = async () => {
-    try {
-      await dispatcher(deletePost(id)).unwrap
-    } catch (err) {
-      console.log(err)
-    }
+    await dispatcher(deletePost(id))
+      .unwrap()
+      .catch(err => console.log(err))
   }
   const link = `/user/${postOwner}`
+  const condition = isAdmin || loggedId === postOwner
   return (
     <>
       <div className={s.menu}>
-        <BsThreeDotsVertical
-          onClick={() => {
-            ref.current?.classList.toggle(`${s.shown}`)
-          }}
-        />
+        {condition && (
+          <BsThreeDotsVertical
+            onClick={() => {
+              ref.current?.classList.toggle(`${s.shown}`)
+            }}
+          />
+        )}
         <div className={s.fullmenu} ref={ref}>
           <button className={s.menuBtn} onClick={clickHandler}>
             Удалить пост
           </button>
-          <button className={s.menuBtn}>Редактировать</button>
         </div>
       </div>
       <div className={s.firstBlock}>
-        <Link to={link }>
+        <Link to={link}>
           <img src={avatar ? avatar : defaultImg} alt='none' className={s.postImg} />
         </Link>
         <div className={s.textBlock}>

@@ -6,4 +6,5 @@ export interface UserView {
   description?: string
   avatar?: string
   status?: string
+  isSubbed: boolean
 }

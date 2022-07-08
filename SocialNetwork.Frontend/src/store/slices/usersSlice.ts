@@ -148,7 +148,7 @@ const usersSlice = createSlice({
       state.usersList = []
       payload?.forEach(elem => {
         if (elem.age === 0) elem.age = undefined
-        elem.avatar = elem.avatar ?? defaultImg
+        elem.avatar = elem.avatar || defaultImg
         state.usersList.push(elem)
       })
     })
@@ -161,13 +161,13 @@ const usersSlice = createSlice({
     })
     builder.addCase(userLogin.fulfilled, (state, { payload }) => {
       state.currentUser = payload.user
-      state.currentUser.avatar = state.currentUser.avatar ?? defaultImg
+      state.currentUser.avatar = state.currentUser.avatar || defaultImg
       state.isAdmin = payload.isAdmin
       window.localStorage.setItem("access_token", payload.access_token)
     })
     builder.addCase(isAuth.fulfilled, (state, { payload }) => {
       state.currentUser = payload.user
-      state.currentUser.avatar = state.currentUser.avatar ?? defaultImg
+      state.currentUser.avatar = state.currentUser.avatar || defaultImg
       state.isAdmin = payload.isAdmin
       state.loadingFullScreen = false
     })
