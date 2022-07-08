@@ -37,9 +37,8 @@ namespace SocialNetworkBackEnd.Controllers
         [Authorize]
         public ActionResult GetUserById(Guid id)
         {
-            UserView result = _userService.GetUserById(id);
-            string email = HttpContext.User.Identity.Name;
-            Console.WriteLine(email);
+            Guid authPerson = Guid.Parse(User.Identity.Name);
+            UserView result = _userService.GetUserById(id, authPerson);
             return result == null ? BadRequest() : Ok(result);
         }
 
@@ -51,23 +50,20 @@ namespace SocialNetworkBackEnd.Controllers
             string result = _userService.AddUser(user);
             return result == Constants.GOOD ? Ok() : BadRequest(result);
         }
-        public class JsonId
-        {
-            public Guid id;
-        }
-        [HttpPost("delete")]
+        
+        [HttpPost("delete/{reqId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Authorize]
-        public ActionResult DeleteUser([FromBody] JsonId reqId)
+        public ActionResult DeleteUser(Guid reqId)
         {
             Guid requestUserId = Guid.Parse(User.Identity.Name);
             bool isAdmin = _userService.AdminCheck(requestUserId);
-            if (reqId.id != requestUserId && isAdmin == false)
+            if (reqId != requestUserId && isAdmin == false)
             {
                 return BadRequest("Обычный пользователь не может удалять других пользователей");
             }
-            return _userService.DeleteUser(reqId.id) ? Ok(reqId.id) : BadRequest();
+            return _userService.DeleteUser(reqId) ? Ok(reqId) : BadRequest();
         }
 
         [HttpPost("edit/{id}")]

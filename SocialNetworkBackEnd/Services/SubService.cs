@@ -11,11 +11,17 @@ namespace SocialNetworkBackEnd.Services
         {
             _subRepository = subRepository;
         }
-        public bool Subscribe(Guid userId, Guid subId)
+        public bool SubAction(Guid userId, Guid subId)
         {
-            return _subRepository.Subscription(ConvertingSubModels.SubDomainToSubDB(
+            SubResult result = _subRepository.CheckForEntity(userId, subId);
+            if (result.SubId != null)
+            {
+                bool isOk = _subRepository.UpdateSubStatus(result.SubId, !result.isActive);
+                return isOk;
+            }
+            return _subRepository.AddSubscription(ConvertingSubModels.SubDomainToSubDB(
                 ConvertingSubModels.SubViewToSubDomain(userId, subId)
                 ));
-        }
+        }        
     }
 }

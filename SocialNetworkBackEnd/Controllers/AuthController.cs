@@ -60,7 +60,7 @@ namespace SocialNetworkBackEnd.Controllers
             {
                 return Unauthorized();
             }
-            UserView user = _userService.GetUserById(Guid.Parse(User.Identity.Name));
+            UserView user = _userService.GetUserById(Guid.Parse(User.Identity.Name), null);
             return Ok(
                 new
                 {

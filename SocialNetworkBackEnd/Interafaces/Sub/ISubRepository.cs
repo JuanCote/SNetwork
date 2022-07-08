@@ -5,6 +5,8 @@ namespace SocialNetworkBackEnd.Interafaces.Sub
 {
     public interface ISubRepository
     {
-        bool Subscription(SubDB sub);
+        SubResult CheckForEntity(Guid? userId, Guid subId);
+        bool AddSubscription(SubDB sub);
+        bool UpdateSubStatus(Guid? id, bool subStatus);
     }
 }

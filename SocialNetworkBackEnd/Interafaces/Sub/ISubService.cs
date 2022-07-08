@@ -4,6 +4,6 @@ namespace SocialNetworkBackEnd.Interafaces.Sub
 {
     public interface ISubService
     {
-        bool Subscribe(Guid userId, Guid subId);
+        bool SubAction(Guid userId, Guid subId);
     }
 }

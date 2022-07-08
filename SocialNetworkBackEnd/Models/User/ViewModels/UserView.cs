@@ -17,6 +17,7 @@ namespace SocialNetworkBackEnd.Models.ViewModels
         public string? Avatar { get; set; }
         public string? Description { get; set; }
         public string? Status { get; set; }
+        public bool? IsSubbed { get; set; }
         public UserView(Guid id, string name, string surname, int? age, string? avatar, string? description, string? status)
         {
             Id = id;

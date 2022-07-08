@@ -8,7 +8,7 @@ namespace SocialNetworkBackEnd.Interafaces.User
     public interface IUserService
     {
         IEnumerable<UserMiniView> GetUsers();
-        UserView GetUserById(Guid id);
+        UserView GetUserById(Guid userId, Guid? authId);
         string AddUser(UserBlank user);
         bool DeleteUser(Guid id);
         bool EditUser(UserBlankEdit user, Guid id);

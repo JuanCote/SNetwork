@@ -13,7 +13,6 @@ namespace SocialNetworkBackEnd.Controllers
     public class SubController : Controller
     {
         private readonly ISubService _subService;
-
         public SubController(ISubService subService)
         {
             _subService = subService;
@@ -23,19 +22,11 @@ namespace SocialNetworkBackEnd.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Authorize]
-        public ActionResult Subscribe([FromBody] SubBlank result )
+        public ActionResult Subscribe([FromBody] SubBlank result)
         {
             Guid userID = Guid.Parse(User.Identity.Name);
-            if (userID == result.Id) return BadRequest("Вы не можете подписаться на самого себя");
-            return _subService.Subscribe(userID, result.Id) ? Ok() : BadRequest();
-        }
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [Authorize]
-        public ActionResult Unsubscribe([FromBody] SubBlank result)
-        {
-            
+            if (userID == result.SubPerson) return BadRequest("Вы не можете подписаться на самого себя");
+            return _subService.SubAction(userID, result.SubPerson) ? Ok() : BadRequest();
         }
     }
 }

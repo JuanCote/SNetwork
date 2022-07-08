@@ -1,4 +1,6 @@
-﻿using SocialNetworkBackEnd.Interafaces.User;
+﻿using SocialNetworkBackEnd.Interafaces.Sub;
+using SocialNetworkBackEnd.Interafaces.User;
+using SocialNetworkBackEnd.Models.Sub;
 using SocialNetworkBackEnd.Models.User;
 using SocialNetworkBackEnd.Models.User.ViewModels;
 using SocialNetworkBackEnd.Models.ViewModels;
@@ -12,21 +14,29 @@ namespace SocialNetworkBackEnd.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        public UserService(IUserRepository userRepository)
+        private readonly ISubRepository _subRepository;
+        public UserService(IUserRepository userRepository, ISubRepository subRepository)
         {
             _userRepository = userRepository;
+            _subRepository = subRepository;
         }
         public IEnumerable<UserMiniView> GetUsers()
         {
             IEnumerable<UserDB> users = _userRepository.GetUsers(false);
-            return users.Select(ConvertingSubModels.FromUserDBToUserDomain)
-                        .Select(ConvertingSubModels.FromUserDomainToUserMiniView);
+            return users.Select(ConvertingUserModels.FromUserDBToUserDomain)
+                        .Select(ConvertingUserModels.FromUserDomainToUserMiniView);
         }
-        public UserView GetUserById(Guid id)
+        public UserView GetUserById(Guid id, Guid? userId)
         {
-            return ConvertingSubModels.FromUserDomainToUserView(
-                ConvertingSubModels.FromUserDBToUserDomain(_userRepository.GetUserById(id))
+            UserView result = ConvertingUserModels.FromUserDomainToUserView(
+                ConvertingUserModels.FromUserDBToUserDomain(_userRepository.GetUserById(id))
                 );
+            if (userId != null)
+            {
+                SubResult subresult = _subRepository.CheckForEntity(userId, id);
+                result.IsSubbed = subresult.isActive;
+            }   
+            return result; 
         }
         public string AddUser(UserBlank user)
         {
@@ -62,7 +72,7 @@ namespace SocialNetworkBackEnd.Services
             }
             if (!user.Email.Contains("@")) return "Адрес почты неверный";
             if (user.Password.Length < 5) return "Пароль слишком короткий";
-            bool result = _userRepository.AddUser(ConvertingSubModels.InsertConvertUserBlankToUserDb(user, id));
+            bool result = _userRepository.AddUser(ConvertingUserModels.InsertConvertUserBlankToUserDb(user, id));
             return result ? Constants.GOOD : "Такой адрес электронной почты существует";
         }
         public bool DeleteUser(Guid id)
@@ -79,7 +89,7 @@ namespace SocialNetworkBackEnd.Services
             {
                 return false;
             }
-            return _userRepository.EditUser(ConvertingSubModels.EditConvertUserBlankToUserDb(user, id));
+            return _userRepository.EditUser(ConvertingUserModels.EditConvertUserBlankToUserDb(user, id));
         }
         public LoginResult Login(UserLogin user)
         {
@@ -104,7 +114,7 @@ namespace SocialNetworkBackEnd.Services
                 return result;
             }
             result.status = Constants.GOOD;
-            result.user = ConvertingSubModels.FromUserDomainToUserView(ConvertingSubModels.FromUserDBToUserDomain(userDB));
+            result.user = ConvertingUserModels.FromUserDomainToUserView(ConvertingUserModels.FromUserDBToUserDomain(userDB));
             return result;
         }
         public bool AdminCheck(Guid id)
