@@ -74,7 +74,7 @@ namespace SocialNetworkBackEnd
 
             app.UseRouting();
 
-            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader());
+            app.UseCors(builder => builder.WithOrigins("http://localhost:1234").AllowAnyHeader());
 
             app.UseAuthentication();
 

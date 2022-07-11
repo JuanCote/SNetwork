@@ -11,10 +11,10 @@ namespace SocialNetworkBackEnd.Properties
         public string Port { get; set; }
         public DbConnectionKeys()
         {
-            Host = "localhost";
-            User = "postgres";
-            DbName = "SocialNetwork";
-            Password = "123";
+            Host = "ec2-3-248-121-12.eu-west-1.compute.amazonaws.com";
+            User = "qynzfqrqxauonc";
+            DbName = "d1h1m0vvlodabd";
+            Password = "b3c57f808175d3f0d895eddd39688391e9ccdc62aca6c6fa69170cd10cb2d95d";
         }
         public NpgsqlConnection ConfigureDbConnection()
         {

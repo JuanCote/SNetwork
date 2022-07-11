@@ -1,6 +1,8 @@
 import axios, { AxiosRequestConfig } from "axios"
 
 const base = "https://localhost:44397"
+// https://localhost:44397
+// https://dbsnetwork1.herokuapp.com
 export const authRequest = axios.create({
   baseURL: `${base}/Auth`,
 })
