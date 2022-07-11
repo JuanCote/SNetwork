@@ -58,22 +58,30 @@ export const Profile: FC = () => {
           <ErrorAlert error={userError} />
         ) : (
           <>
-            <div className={`${s.contentBox} ${s.firstPart}`}>
-              <img src={user.avatar} alt='avatar' className={s.avatar} />
-              {condition && (
-                <Link className={s.editBtn} to={`/edit/${id}`}>
-                  Редактировать
-                </Link>
-              )}
-              {userId !== id && (
-                <Button
-                  className={s.editBtn}
-                  disabled={isBtnDisabled}
-                  onClick={subClickHandler}
-                >
-                  {user.isSubbed ? "Отписаться" : "Подписаться"}
-                </Button>
-              )}
+            <div className={s.firstPart}>
+              <div className={`${s.contentBox}`}>
+                <img src={user.avatar} alt='avatar' className={s.avatar} />
+                {condition && (
+                  <Link className={s.editBtn} to={`/edit/${id}`}>
+                    Редактировать
+                  </Link>
+                )}
+                {userId !== id && (
+                  <Button
+                    className={s.editBtn}
+                    disabled={isBtnDisabled}
+                    onClick={subClickHandler}
+                  >
+                    {user.isSubbed ? "Отписаться" : "Подписаться"}
+                  </Button>
+                )}
+              </div>
+              <Link className={`${s.contentBox} ${s.link}`} to='followers'>
+                Подписчики ({user.followers})
+              </Link>
+              <Link className={`${s.contentBox} ${s.link}`} to='subscribers'>
+                Подписки ({user.subscribers})
+              </Link>
             </div>
             <div className={s.secondPart}>
               <div className={s.contentBox}>

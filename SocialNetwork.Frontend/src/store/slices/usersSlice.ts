@@ -1,5 +1,5 @@
 import { UserView } from "./../../models/userView"
-import { userRequest } from "./../../requests/http"
+import { subRequest, userRequest } from "./../../requests/http"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios, { AxiosError } from "axios"
 import { UserFormData } from "../../models/formData"
@@ -13,6 +13,8 @@ interface stateInterface {
   deleteHappen: boolean
   currentUser: UserView
   isAdmin: boolean
+  userFollowers: UserMiniView[]
+  userSubs: UserMiniView[]
 }
 
 const initialState: stateInterface = {
@@ -21,6 +23,8 @@ const initialState: stateInterface = {
   deleteHappen: false,
   currentUser: <UserView>{},
   isAdmin: false,
+  userFollowers: [],
+  userSubs: [],
 }
 
 export const fetchUsers = createAsyncThunk(
@@ -126,10 +130,35 @@ export const isAuth = createAsyncThunk("users/isAuth", async (_, { rejectWithVal
     return result.data
   } catch (err) {
     const error = err as AxiosError
-    console.log(error)
     return rejectWithValue(error.message)
   }
 })
+
+export const getFollowers = createAsyncThunk(
+  "users/getFollowers",
+  async (action: string, { rejectWithValue }) => {
+    try {
+      const result = await subRequest.get<UserMiniView[]>(`${action}/followers`)
+      return result.data
+    } catch (err) {
+      const error = err as AxiosError
+      return rejectWithValue(error.message)
+    }
+  }
+)
+
+export const getSubscribers = createAsyncThunk(
+  "users/getSubscribers",
+  async (action: string, { rejectWithValue }) => {
+    try {
+      const result = await subRequest.get<UserMiniView[]>(`${action}/subscribers`)
+      return result.data
+    } catch (err) {
+      const error = err as AxiosError
+      return rejectWithValue(error.message)
+    }
+  }
+)
 
 const usersSlice = createSlice({
   name: "users",
@@ -147,9 +176,7 @@ const usersSlice = createSlice({
     builder.addCase(fetchUsers.fulfilled, (state, { payload }) => {
       state.usersList = []
       payload?.forEach(elem => {
-        if (elem.age === 0) elem.age = undefined
-        elem.avatar = elem.avatar || defaultImg
-        state.usersList.push(elem)
+        state.usersList.push(DefaultValuesUser(elem))
       })
     })
     builder.addCase(fetchUsers.rejected, state => {
@@ -177,8 +204,26 @@ const usersSlice = createSlice({
     builder.addCase(isAuth.rejected, state => {
       state.loadingFullScreen = false
     })
+    builder.addCase(getFollowers.fulfilled, (state, { payload }) => {
+      state.userFollowers = []
+      payload.forEach(elem => {
+        state.userFollowers.push(DefaultValuesUser(elem))
+      })
+    })
+    builder.addCase(getSubscribers.fulfilled, (state, { payload }) => {
+      state.userSubs = []
+      payload.forEach(elem => {
+        state.userSubs.push(DefaultValuesUser(elem))
+      })
+    })
   },
 })
+
+function DefaultValuesUser(user: UserMiniView) {
+  if (user.age === 0) user.age = undefined
+  user.avatar = user.avatar || defaultImg
+  return user
+}
 
 export const usersReducer = usersSlice.reducer
 

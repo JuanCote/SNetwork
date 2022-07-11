@@ -7,6 +7,7 @@ import s from "./ProfileEdit.module.sass"
 import { UserFormData } from "../../models/formData"
 import { editUser } from "../../store/slices/usersSlice"
 import { MyLoadingOverlay } from "../Common/MyLoadingOverlay"
+import defaultImg from "../../img/default.jpg"
 
 export const ProfileEdit = () => {
   const { id } = useParams()
@@ -19,16 +20,11 @@ export const ProfileEdit = () => {
     initialValues: {
       name: user.name,
       surname: user.surname,
-      avatar: user?.avatar,
+      avatar: user?.avatar === defaultImg ? "" : user?.avatar,
       description: user?.description,
       status: user?.status,
       age: user?.age,
     },
-    // validate: { // TODO: Добавить валидацию на поля
-    //   name: value => {
-
-    //   }
-    // }
   })
   const editSingleUser = async (values: UserFormData) => {
     console.log(values)

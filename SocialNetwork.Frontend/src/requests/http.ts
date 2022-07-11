@@ -16,7 +16,6 @@ export const postRequest = axios.create({
 export const subRequest = axios.create({
   baseURL: `${base}/Sub`,
 })
-
 const authFunc = (request: AxiosRequestConfig<any>) => {
   const token = window.localStorage.getItem("access_token")
   request.headers = {

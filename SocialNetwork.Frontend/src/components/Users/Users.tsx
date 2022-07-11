@@ -4,12 +4,13 @@ import { useNavigate } from "react-router-dom"
 import { closeDeleteNotification, fetchUsers } from "../../store/slices/usersSlice"
 import { useTypedDispatch, useTypedSelector } from "../../store/store"
 import { MyLoadingOverlay } from "../Common/MyLoadingOverlay"
+import { UsersList } from "../Common/UsersList/UsersList"
 import { SingleUser } from "./SingleUser/SingleUser"
 import s from "./Users.module.sass"
 
 export const Users = () => {
   const [isLoading, setIsLoading] = useState(true)
-  const [errBanner, setErrBanner] = useState<String>("")
+  const [errBanner, setErrBanner] = useState<string>("")
   const { deleteHappen } = useTypedSelector(state => state.users)
   const users = useTypedSelector(state => state.users.usersList)
   const dispatcher = useTypedDispatch()
@@ -24,7 +25,7 @@ export const Users = () => {
         if (err === "401") {
           redirect("/login")
         }
-        setErrBanner(err as String)
+        setErrBanner(err as string)
       }
     })()
   }, [deleteHappen])
@@ -39,19 +40,11 @@ export const Users = () => {
       </Modal>
       <div className={s.section}>
         <h2 className={s.title}>Пользователи</h2>
-        <ScrollArea className={s.scroll} scrollHideDelay={0}>
-          <MyLoadingOverlay visible={isLoading} classNameL={s.load} />
-          <div className={s.users}>
-            {errBanner && (
-              <Alert title='Произошла ошибка' color='red' className={s.error}>
-                {errBanner}
-              </Alert>
-            )}
-            {users.map(elem => (
-              <SingleUser {...elem} key={elem.id} />
-            ))}
-          </div>
-        </ScrollArea>
+        <UsersList isLoading={isLoading} errBanner={errBanner}>
+          {users.map(elem => (
+            <SingleUser {...elem} key={elem.id} />
+          ))}
+        </UsersList>
       </div>
     </>
   )

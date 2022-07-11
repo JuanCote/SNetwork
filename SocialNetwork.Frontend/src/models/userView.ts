@@ -7,4 +7,6 @@ export interface UserView {
   avatar?: string
   status?: string
   isSubbed: boolean
+  subscribers: number
+  followers: number
 }
