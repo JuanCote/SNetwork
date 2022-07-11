@@ -200,6 +200,54 @@ namespace SocialNetworkBackEnd.Repository
             }
             return false;
         }
+        public int GetSubCount(Guid id)
+        {
+            try
+            {
+                using NpgsqlConnection conn = ConnectionKeys.ConfigureDbConnection();
+                conn.Open();
+                string query = "select count(*) from users where id in " +
+                    "(select sub_id from subscriptions where user_id = @id and is_active = true)";
+                using NpgsqlCommand command = new NpgsqlCommand(query, conn)
+                {
+                    Parameters =
+                    {
+                        new NpgsqlParameter("@id", id),
+                    }
+                };
+                int result = Convert.ToInt32(command.ExecuteScalar()); // int32 because count return number in int64
+                return result;
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine($"Error occured in UserRepository.cs (GetSubCount) >>> {error.Message}");
+            }
+            return 0;
+        }
+        public int GetFollowersCount(Guid id)
+        {
+            try
+            {
+                using NpgsqlConnection conn = ConnectionKeys.ConfigureDbConnection();
+                conn.Open();
+                string query = "select count(*) from users where id in " +
+                    "(select user_id from subscriptions where sub_id = @id and is_active = true)";
+                using NpgsqlCommand command = new NpgsqlCommand(query, conn)
+                {
+                    Parameters =
+                    {
+                        new NpgsqlParameter("@id", id),
+                    }
+                };
+                int result = Convert.ToInt32(command.ExecuteScalar()); // int32 because count return number in int64
+                return result;
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine($"Error occured in UserRepository.cs (GetFollowersCount) >>> {error.Message}");
+            }
+            return 0;
+        }
 
         UserDB UserDbFromReader(NpgsqlDataReader reader)
         {

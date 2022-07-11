@@ -2,8 +2,11 @@
 using Npgsql;
 using SocialNetworkBackEnd.Interafaces.Sub;
 using SocialNetworkBackEnd.Models.Sub;
+using SocialNetworkBackEnd.Models.User;
 using SocialNetworkBackEnd.Properties;
 using System;
+using System.Collections.Generic;
+using System.Data;
 
 namespace SocialNetworkBackEnd.Repository
 {
@@ -82,7 +85,7 @@ namespace SocialNetworkBackEnd.Repository
                 connection.Open();
                 string query =
                     $"update subscriptions set is_active = @status where id = @id";
-                using NpgsqlCommand addPost = new NpgsqlCommand(query, connection)
+                using NpgsqlCommand command = new NpgsqlCommand(query, connection)
                 {
                     Parameters =
                     {
@@ -90,7 +93,7 @@ namespace SocialNetworkBackEnd.Repository
                         new NpgsqlParameter("@status", subStatus),
                     }
                 };
-                int rows = addPost.ExecuteNonQuery();
+                int rows = command.ExecuteNonQuery();
                 return rows == 1 ? true : false;
             }
             catch (Exception error)
@@ -98,6 +101,83 @@ namespace SocialNetworkBackEnd.Repository
                 Console.WriteLine($"ERROR IN SubRepository.cs (UpdateSubStatus) >>> {error}");
             }
             return false;
+        }
+        public IEnumerable<UserDB> GetFollowers(Guid id)
+        {
+            List<UserDB> usersResult = new List<UserDB>();
+            try
+            {
+                using NpgsqlConnection connection = ConnectionKeys.ConfigureDbConnection();
+                connection.Open();
+                string query =
+                    $"select * from users where id in " +
+                    $"(select user_id from subscriptions where sub_id = @id and is_active = true)";
+                using NpgsqlCommand command = new NpgsqlCommand(query, connection)
+                {
+                    Parameters =
+                    {
+                        new NpgsqlParameter("@id", id),
+                    }
+                };
+                NpgsqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    usersResult.Add(UserDbFromReader(reader));
+                }
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine($"ERROR IN SubRepository.cs (GetFollowers) >>> {error}");
+            }
+            return usersResult;
+        }
+
+        public IEnumerable<UserDB> GetSubscribers(Guid id)
+        {
+            List<UserDB> usersResult = new List<UserDB>();
+            try
+            {
+                using NpgsqlConnection connection = ConnectionKeys.ConfigureDbConnection();
+                connection.Open();
+                string query =
+                    $"select * from users where id in " +
+                    $"(select sub_id from subscriptions where user_id = @id and is_active = true)";
+                using NpgsqlCommand command = new NpgsqlCommand(query, connection)
+                {
+                    Parameters =
+                    {
+                        new NpgsqlParameter("@id", id),
+                    }
+                };
+                NpgsqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    usersResult.Add(UserDbFromReader(reader));
+                }
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine($"ERROR IN SubRepository.cs (GetSubscribers) >>> {error}");
+            }
+            return usersResult;
+        }
+
+        UserDB UserDbFromReader(NpgsqlDataReader reader)
+        {
+            return new UserDB(
+                (Guid)reader.GetValue("id"),
+                (string)reader.GetValue("name"),
+                (string)reader.GetValue("surname"),
+                Utils.ConvertFromDBVal<int>(reader.GetValue("age")),
+                Utils.ConvertFromDBVal<string>(reader.GetValue("avatar")),
+                Utils.ConvertFromDBVal<string>(reader.GetValue("description")),
+                Utils.ConvertFromDBVal<string>(reader.GetValue("status")),
+                Utils.ConvertFromDBVal<DateTime>(reader.GetValue("creation_date")),
+                Utils.ConvertFromDBVal<DateTime>(reader.GetValue("modified_date")),
+                (bool)reader.GetValue("is_deleted"),
+                (string)reader.GetValue("email"),
+                (string)reader.GetValue("password")
+                );
         }
     }
 }

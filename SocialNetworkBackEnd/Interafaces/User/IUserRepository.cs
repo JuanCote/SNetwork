@@ -13,6 +13,7 @@ namespace SocialNetworkBackEnd.Interafaces.User
         bool EditUser(UserDB user);
         UserDB FindUser(string email);
         bool AdminCheck(Guid id);
-
+        int GetSubCount(Guid id);
+        int GetFollowersCount(Guid id);
     }
 }

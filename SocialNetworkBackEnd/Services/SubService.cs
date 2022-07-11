@@ -1,6 +1,10 @@
 ﻿using SocialNetworkBackEnd.Interafaces.Sub;
 using SocialNetworkBackEnd.Models.Sub;
+using SocialNetworkBackEnd.Models.User;
+using SocialNetworkBackEnd.Models.ViewModels;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SocialNetworkBackEnd.Services
 {
@@ -22,6 +26,20 @@ namespace SocialNetworkBackEnd.Services
             return _subRepository.AddSubscription(ConvertingSubModels.SubDomainToSubDB(
                 ConvertingSubModels.SubViewToSubDomain(userId, subId)
                 ));
-        }        
+        }
+        
+        public IEnumerable<UserMiniView> GetFollowers(Guid id)
+        {
+            IEnumerable<UserDB> users = _subRepository.GetFollowers(id);
+            return users.Select(ConvertingUserModels.FromUserDBToUserDomain)
+                        .Select(ConvertingUserModels.FromUserDomainToUserMiniView);
+        }
+
+        public IEnumerable<UserMiniView> GetSubscribers(Guid id)
+        {
+            IEnumerable<UserDB> users = _subRepository.GetSubscribers(id);
+            return users.Select(ConvertingUserModels.FromUserDBToUserDomain)
+                        .Select(ConvertingUserModels.FromUserDomainToUserMiniView);
+        }
     }
 }

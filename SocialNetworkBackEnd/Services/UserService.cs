@@ -26,7 +26,7 @@ namespace SocialNetworkBackEnd.Services
             return users.Select(ConvertingUserModels.FromUserDBToUserDomain)
                         .Select(ConvertingUserModels.FromUserDomainToUserMiniView);
         }
-        public UserView GetUserById(Guid id, Guid? userId)
+        public UserView GetUserById(Guid id, Guid? userId) // userId = id авторизованного пользователя
         {
             UserView result = ConvertingUserModels.FromUserDomainToUserView(
                 ConvertingUserModels.FromUserDBToUserDomain(_userRepository.GetUserById(id))
@@ -35,7 +35,11 @@ namespace SocialNetworkBackEnd.Services
             {
                 SubResult subresult = _subRepository.CheckForEntity(userId, id);
                 result.IsSubbed = subresult.isActive;
-            }   
+                int subs = _userRepository.GetSubCount(id);
+                int followers = _userRepository.GetFollowersCount(id);
+                result.Subscribers = subs;
+                result.Followers = followers;
+            }
             return result; 
         }
         public string AddUser(UserBlank user)
