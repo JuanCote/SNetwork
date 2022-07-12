@@ -1,21 +1,21 @@
-import { Alert, Button, NumberInput, Textarea, TextInput } from "@mantine/core"
-import { useForm } from "@mantine/hooks"
-import { useState } from "react"
-import { useParams } from "react-router-dom"
-import { useTypedDispatch, useTypedSelector } from "../../store/store"
-import s from "./ProfileEdit.module.sass"
-import { UserFormData } from "../../models/formData"
-import { editUser } from "../../store/slices/usersSlice"
-import { MyLoadingOverlay } from "../Common/MyLoadingOverlay"
-import defaultImg from "../../img/default.jpg"
+import { Alert, Button, NumberInput, Textarea, TextInput } from "@mantine/core";
+import { useForm } from "@mantine/hooks";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { useTypedDispatch, useTypedSelector } from "../../store/store";
+import s from "./ProfileEdit.module.sass";
+import { UserFormData } from "../../models/formData";
+import { editUser } from "../../store/slices/usersSlice";
+import { MyLoadingOverlay } from "../Common/MyLoadingOverlay";
+import defaultImg from "../../img/default.jpg";
 
 export const ProfileEdit = () => {
-  const { id } = useParams()
-  const dispatcher = useTypedDispatch()
-  const { user } = useTypedSelector(state => state.profile)
-  const [succesEdit, setSuccesEdit] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string>("")
+  const { id } = useParams();
+  const dispatcher = useTypedDispatch();
+  const { user } = useTypedSelector(state => state.profile);
+  const [succesEdit, setSuccesEdit] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string>("");
   const form = useForm({
     initialValues: {
       name: user.name,
@@ -25,21 +25,19 @@ export const ProfileEdit = () => {
       status: user?.status,
       age: user?.age,
     },
-  })
+  });
   const editSingleUser = async (values: UserFormData) => {
-    console.log(values)
     try {
-      setError("")
-      setIsLoading(true)
-      await dispatcher(editUser({ user: values, id })).unwrap()
-      setIsLoading(false)
-      setSuccesEdit(true)
+      setError("");
+      setIsLoading(true);
+      await dispatcher(editUser({ user: values, id })).unwrap();
+      setIsLoading(false);
+      setSuccesEdit(true);
     } catch (error) {
-      console.log(error)
-      setError(error as string)
-      setIsLoading(false)
+      setError(error as string);
+      setIsLoading(false);
     }
-  }
+  };
   // const focusHandler = (e: React.FocusEvent) => form.(e.target.id as allId) // убирает ошибку для определенного поля TODO: Убрать ошибки при фокусе
   return (
     <>
@@ -157,5 +155,5 @@ export const ProfileEdit = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};

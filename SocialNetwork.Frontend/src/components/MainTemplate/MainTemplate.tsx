@@ -1,26 +1,26 @@
-import { Button } from "@mantine/core"
-import { AiFillApi } from "react-icons/ai"
-import { BiLogIn } from "react-icons/bi"
-import { CgProfile } from "react-icons/cg"
-import { MdOutlinePeopleAlt } from "react-icons/md"
-import { Link, NavLink, Outlet, useNavigate } from "react-router-dom"
-import { userLogout } from "../../store/slices/usersSlice"
-import { useTypedDispatch, useTypedSelector } from "../../store/store"
-import { Logo } from "../Common/Logo"
-import { MyLoadingOverlay } from "../Common/MyLoadingOverlay"
-import s from "./MainTemplate.module.sass"
+import { Button } from "@mantine/core";
+import { AiFillApi } from "react-icons/ai";
+import { BiLogIn } from "react-icons/bi";
+import { CgProfile } from "react-icons/cg";
+import { MdOutlinePeopleAlt } from "react-icons/md";
+import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
+import { userLogout } from "../../store/slices/usersSlice";
+import { useTypedDispatch, useTypedSelector } from "../../store/store";
+import { Logo } from "../Common/Logo";
+import { MyLoadingOverlay } from "../Common/MyLoadingOverlay";
+import s from "./MainTemplate.module.sass";
 
 export const MainTemplate = () => {
-  const isLoading = useTypedSelector(state => state.users.loadingFullScreen)
-  const { currentUser } = useTypedSelector(state => state.users)
-  const dispatcher = useTypedDispatch()
-  const redirect = useNavigate()
+  const isLoading = useTypedSelector(state => state.users.loadingFullScreen);
+  const { currentUser } = useTypedSelector(state => state.users);
+  const dispatcher = useTypedDispatch();
+  const redirect = useNavigate();
 
-  const currUserExist = JSON.stringify(currentUser) !== "{}"
+  const currUserExist = JSON.stringify(currentUser) !== "{}";
   const logout = async () => {
-    await dispatcher(userLogout())
-    redirect("/login")
-  }
+    await dispatcher(userLogout());
+    redirect("/login");
+  };
   return (
     <>
       <MyLoadingOverlay visible={isLoading} />
@@ -28,7 +28,9 @@ export const MainTemplate = () => {
         <div className='container'>
           <div className={s.wrapper}>
             <div className={s.box}>
-              <Logo />
+              <Link to='/' style={{ color: "white" }}>
+                <Logo />
+              </Link>
             </div>
             {currUserExist && (
               <div className={s.user}>
@@ -97,5 +99,5 @@ export const MainTemplate = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
