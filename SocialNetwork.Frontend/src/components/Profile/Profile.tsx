@@ -1,54 +1,54 @@
-import React, { FC, useEffect, useState } from "react"
-import { Link, useNavigate, useParams } from "react-router-dom"
-import s from "./Profile.module.sass"
-import defaultImg from "../../img/default.jpg"
-import { useTypedDispatch, useTypedSelector } from "../../store/store"
-import { MyLoadingOverlay } from "../Common/MyLoadingOverlay"
-import { getUser, SubscribeActions } from "../../store/slices/profileSlice"
-import { DescriptionBlock } from "./DesctiptionBlock/DescriptionBlock"
-import { PostForm } from "./Post/PostForm"
-import { SinglePost } from "./Post/SinglePost/SinglePost"
-import { getPosts } from "../../store/slices/postsSlice"
-import { ErrorAlert } from "../Common/ErrorAlert"
-import { Button, LoadingOverlay } from "@mantine/core"
+import React, { FC, useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import s from "./Profile.module.sass";
+import defaultImg from "../../img/default.jpg";
+import { useTypedDispatch, useTypedSelector } from "../../store/store";
+import { MyLoadingOverlay } from "../Common/MyLoadingOverlay";
+import { getUser, SubscribeActions } from "../../store/slices/profileSlice";
+import { DescriptionBlock } from "./DesctiptionBlock/DescriptionBlock";
+import { PostForm } from "./Post/PostForm";
+import { SinglePost } from "./Post/SinglePost/SinglePost";
+import { getPosts } from "../../store/slices/postsSlice";
+import { ErrorAlert } from "../Common/ErrorAlert";
+import { Button, LoadingOverlay } from "@mantine/core";
 
 export const Profile: FC = () => {
-  const [isLoading, setIsLoading] = useState(true)
-  const [isBtnDisabled, setIsBtnDisabled] = useState(false)
-  const [userError, setUserError] = useState<string>("Не удалось загрузить профиль")
-  const { isAdmin } = useTypedSelector(state => state.users)
-  const { user } = useTypedSelector(state => state.profile)
-  const { posts } = useTypedSelector(state => state.posts)
-  const { id: userId } = useTypedSelector(state => state.users.currentUser)
-  const dispatcher = useTypedDispatch()
-  const redirect = useNavigate()
-  const { id } = useParams()
+  const [isLoading, setIsLoading] = useState(true);
+  const [isBtnDisabled, setIsBtnDisabled] = useState(false);
+  const [userError, setUserError] = useState<string>("Не удалось загрузить профиль");
+  const { isAdmin } = useTypedSelector(state => state.users);
+  const { user } = useTypedSelector(state => state.profile);
+  const { posts } = useTypedSelector(state => state.posts);
+  const { id: userId } = useTypedSelector(state => state.users.currentUser);
+  const dispatcher = useTypedDispatch();
+  const redirect = useNavigate();
+  const { id } = useParams();
 
   useEffect(() => {
-    ;(async () => {
-      setIsLoading(true)
+    (async () => {
+      setIsLoading(true);
       try {
-        await dispatcher(getUser(id)).unwrap()
+        await dispatcher(getUser(id)).unwrap();
       } catch (error) {
         if (error === "401") {
-          redirect("/login")
-          return
+          redirect("/login");
+          return;
         }
-        setUserError(error as string)
-        setIsLoading(false)
-        return
+        setUserError(error as string);
+        setIsLoading(false);
+        return;
       }
-      await dispatcher(getPosts(id)).unwrap()
-      setIsLoading(false)
-    })()
-  }, [id])
+      await dispatcher(getPosts(id)).unwrap();
+      setIsLoading(false);
+    })();
+  }, [id]);
   const subClickHandler = async () => {
-    setIsBtnDisabled(true)
-    await dispatcher(SubscribeActions(id!))
-    setIsBtnDisabled(false)
-  }
-  const userExists = JSON.stringify(user) === "{}"
-  const condition = isAdmin || userId === id
+    setIsBtnDisabled(true);
+    await dispatcher(SubscribeActions(id!));
+    setIsBtnDisabled(false);
+  };
+  const userExists = JSON.stringify(user) === "{}";
+  const condition = isAdmin || userId === id;
   return (
     <>
       <div className={s.box}>
@@ -97,8 +97,8 @@ export const Profile: FC = () => {
                 <PostForm id={user.id} />
               </div>
               {posts.map(elem => (
-                <div className={s.contentBox}>
-                  <SinglePost {...elem} key={elem.id} />
+                <div className={s.contentBox} key={elem.id}>
+                  <SinglePost {...elem} userId={id!} />
                 </div>
               ))}
             </div>
@@ -106,5 +106,5 @@ export const Profile: FC = () => {
         )}
       </div>
     </>
-  )
-}
+  );
+};

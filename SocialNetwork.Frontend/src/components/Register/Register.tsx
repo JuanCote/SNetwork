@@ -5,22 +5,22 @@ import {
   LoadingOverlay,
   Alert,
   PasswordInput,
-} from "@mantine/core"
-import { useForm } from "@mantine/form"
-import React, { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import { UserFormData } from "../../models/formData"
-import { addUser } from "../../store/slices/usersSlice"
-import { useTypedDispatch } from "../../store/store"
-import { MyLoadingOverlay } from "../Common/MyLoadingOverlay"
-import s from "./Register.module.sass"
+} from "@mantine/core";
+import { useForm } from "@mantine/form";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { UserFormData } from "../../models/formData";
+import { addUser } from "../../store/slices/usersSlice";
+import { useTypedDispatch } from "../../store/store";
+import { MyLoadingOverlay } from "../Common/MyLoadingOverlay";
+import s from "./Register.module.sass";
 
 const isImage = (url: string) => {
-  return /\.(jpg|jpeg|png|webp|avif|gif|svg)/.test(url)
-}
+  return /\.(jpg|jpeg|png|webp|avif|gif|svg)/.test(url);
+};
 
 const regex =
-  /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
+  /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
 
 type allId =
   | "name"
@@ -30,13 +30,13 @@ type allId =
   | "status"
   | "age"
   | "email"
-  | "password"
+  | "password";
 
 export const Register = () => {
-  const dispatcher = useTypedDispatch()
-  const redirect = useNavigate()
-  const [isLoading, setIsLoading] = useState(false)
-  const [errorBanner, setErrorBanner] = useState<String>("")
+  const dispatcher = useTypedDispatch();
+  const redirect = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorBanner, setErrorBanner] = useState<String>("");
   const form = useForm({
     initialValues: {
       name: "",
@@ -54,43 +54,44 @@ export const Register = () => {
       surname: value =>
         value.length <= 2 ? "Фамилия должна содержать минимум 3 символа" : null,
       avatar: value => {
-        if (value.trim() === "") return null
+        if (value.trim() === "") return null;
         if (!isImage(value)) {
-          return "Не валидная ссылка на аватар"
+          return "Не валидная ссылка на аватар";
         }
-        return null
+        return null;
       },
       age: value => {
-        const numberValue = +value
+        const numberValue = +value;
         if ((numberValue > 100 || numberValue < 4) && numberValue != 0) {
-          return "Возраст должен быть в диапазоне от 5 до 100"
+          return "Возраст должен быть в диапазоне от 5 до 100";
         }
-        return null
+        return null;
       },
       email: value => (value.includes("@") ? null : "Не валидная электронная почта"),
       password: value =>
         value.length <= 4 ? "Пароль должен содержать миниммум 5 символов" : null,
     },
-  })
+  });
 
-  const focusHandler = (e: React.FocusEvent) => form.clearFieldError(e.target.id as allId) // убирает ошибку для определенного поля
+  const focusHandler = (e: React.FocusEvent) =>
+    form.clearFieldError(e.target.id as allId); // убирает ошибку для определенного поля
 
   const submitHandler = async (values: UserFormData) => {
-    setErrorBanner("") //Убираем баннер ошибки
-    form.validate()
+    setErrorBanner(""); //Убираем баннер ошибки
+    form.validate();
 
     try {
-      setIsLoading(true)
-      const response = await dispatcher(addUser(values)).unwrap()
-      setIsLoading(false)
-      redirect("/users")
-      console.log(response)
+      setIsLoading(true);
+      const response = await dispatcher(addUser(values)).unwrap();
+      setIsLoading(false);
+      redirect("/users");
+      console.log(response);
     } catch (err) {
-      setErrorBanner(err as String)
-      setIsLoading(false)
-      console.log("ERROR IN REGISTER COMPONENT >>> " + err)
+      setErrorBanner(err as String);
+      setIsLoading(false);
+      console.log("ERROR IN REGISTER COMPONENT >>> " + err);
     }
-  }
+  };
 
   return (
     <div className={s.wrapper}>
@@ -144,7 +145,7 @@ export const Register = () => {
           onFocus={focusHandler}
           id='password'
         />
-        <TextInput
+        {/* <TextInput
           label='Аватар'
           placeholder='Ссылка на ваш аватар'
           className={s.input}
@@ -179,7 +180,7 @@ export const Register = () => {
           maxLength={3}
           onFocus={focusHandler}
           id='age'
-        />
+        /> */}
         <Button className={s.button} type='submit'>
           Зарегистрироваться
         </Button>
@@ -188,5 +189,5 @@ export const Register = () => {
         Уже есть аккаунт? <Link to='/login'>Войдите</Link>
       </p>
     </div>
-  )
-}
+  );
+};

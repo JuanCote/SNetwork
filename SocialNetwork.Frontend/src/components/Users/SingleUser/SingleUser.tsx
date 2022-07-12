@@ -1,13 +1,13 @@
-import { FC, useState } from "react"
-import s from "./SingleUser.module.sass"
-import defaultImg from "../../../img/default.jpg"
-import { Link } from "react-router-dom"
-import { UserMiniView } from "../../../models/userMiniView"
-import { FaTrashAlt } from "react-icons/fa"
-import { Button, Modal } from "@mantine/core"
-import { BsCheck2Circle } from "react-icons/bs"
-import { useTypedDispatch, useTypedSelector } from "../../../store/store"
-import { deleteUser } from "../../../store/slices/usersSlice"
+import { FC, useState } from "react";
+import s from "./SingleUser.module.sass";
+import defaultImg from "../../../img/default.jpg";
+import { Link } from "react-router-dom";
+import { UserMiniView } from "../../../models/userMiniView";
+import { FaTrashAlt } from "react-icons/fa";
+import { Button, Modal } from "@mantine/core";
+import { BsCheck2Circle } from "react-icons/bs";
+import { useTypedDispatch, useTypedSelector } from "../../../store/store";
+import { deleteUser } from "../../../store/slices/usersSlice";
 
 export const SingleUser: FC<UserMiniView> = ({
   id,
@@ -17,22 +17,22 @@ export const SingleUser: FC<UserMiniView> = ({
   status,
   avatar,
 }) => {
-  const [modal, setModal] = useState(false)
-  const [error, setError] = useState<string>("")
-  const [isLoading, setIsLoading] = useState(false)
-  const { isAdmin } = useTypedSelector(state => state.users)
-  const dispatcher = useTypedDispatch()
-  const link = `/user/${id}`
+  const [modal, setModal] = useState(false);
+  const [error, setError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { isAdmin } = useTypedSelector(state => state.users);
+  const dispatcher = useTypedDispatch();
+  const link = `/user/${id}`;
   const deleteOneUser = async () => {
     try {
-      await dispatcher(deleteUser(id)).unwrap()
+      await dispatcher(deleteUser(id)).unwrap();
     } catch (err) {
-      setError(err as string)
+      setError(err as string);
     }
-  }
+  };
   const closeModal = () => {
-    setModal(false)
-  }
+    setModal(false);
+  };
   //TODO: желательно логику по дефолтной картинке вынести в слайс
   return (
     <>
@@ -74,5 +74,5 @@ export const SingleUser: FC<UserMiniView> = ({
         )}
       </Modal>
     </>
-  )
-}
+  );
+};
