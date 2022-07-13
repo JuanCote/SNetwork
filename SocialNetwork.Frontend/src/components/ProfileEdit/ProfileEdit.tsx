@@ -76,6 +76,7 @@ export const ProfileEdit = () => {
                 className={s.input}
                 {...form.getInputProps("name")}
                 // onFocus={focusHandler}
+                maxLength={25}
                 id='name'
                 variant='default'
               />
@@ -101,7 +102,6 @@ export const ProfileEdit = () => {
               <TextInput
                 className={s.input}
                 {...form.getInputProps("avatar")}
-                maxLength={25}
                 // onFocus={focusHandler}
                 id='avatar'
                 variant='default'
@@ -114,7 +114,6 @@ export const ProfileEdit = () => {
               <Textarea
                 className={`${s.input}`}
                 {...form.getInputProps("description")}
-                maxLength={25}
                 // onFocus={focusHandler}
                 id='description'
                 variant='default'
