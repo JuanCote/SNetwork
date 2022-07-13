@@ -1,13 +1,12 @@
 # SNetwork😶‍🌫️
 
-frontend - react with typescript, redux-toolkit, axios😶‍🌫️
+> frontend - react with typescript, redux-toolkit, axios😶‍🌫️
 
-backend - c#, asp.net5 web api 😶‍🌫️
+> backend - c#, asp.net5 web api 😶‍🌫️
 
-db that i use - postgres 😶‍🌫️
+> db that i use - postgres 😶‍🌫️
 
-in order to work you need to launh my Server😴
+## Test login and password 
+login: @; password: 12345;
 
-but you also need to connect your database🤕
-
-when the project will be mvp state, im gonna buy host 🥸
+> in future i will add news, and likes on post
