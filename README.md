@@ -9,4 +9,3 @@
 ## Test login and password 
 login: @; password: 12345;
 
-> in future i will add news, and likes on post
